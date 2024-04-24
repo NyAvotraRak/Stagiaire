@@ -1,0 +1,68 @@
+#default-selectko
+{
+    width: 100%;
+    height: 40px;
+    border-color: gainsboro;
+    color: grey;
+    background-color: rgb(250, 250, 250);
+}
+
+#default-selectcv
+{
+    width: 94%;
+    height: 40px;
+    border-color: gainsboro;
+    color: grey;
+    background-color: rgb(250, 250, 250);
+}
+
+#default-selectphoto
+{
+    width: 89%;
+    height: 40px;
+    border-color: gainsboro;
+    color: grey;
+    background-color: rgb(250, 250, 250);
+}
+
+#default-selectlm
+{
+    width: 70%;
+    height: 40px;
+    border-color: gainsboro;
+    color: grey;
+    background-color: rgb(250, 250, 250);
+}
+
+#default-selectautre
+{
+    width: 90%;
+    height: 40px;
+    border-color: gainsboro;
+    color: grey;
+    background-color: rgb(250, 250, 250);
+}
+
+#demande
+{
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#demande>h3
+{
+    text-align: center;
+    text-decoration: underline;
+}
+#submit
+{
+    float: right;
+}
+
+.nowrap{
+    flex-wrap: nowrap;
+}
+#haha{
+    width: 100%;
+    height: 100px;
+}
