@@ -39,7 +39,8 @@
             </select>
             <x-input-error class="mt-2" :messages="$errors->get('fonction_id')" />
         </div>
-
+<br>
+<br>
         <!-- Service -->
         <div>
             <x-input-label for="service_id" :value="__('Service')" />

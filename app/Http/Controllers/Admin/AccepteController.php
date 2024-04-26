@@ -22,7 +22,7 @@ class AccepteController extends Controller
             ->join('niveaux', 'demandes.niveau_id', '=', 'niveaux.id')
             ->join('etats', 'demandes.etat_id', '=', 'etats.id')
             ->join('services', 'demandes.service_id', '=', 'services.id')
-            ->orderBy('detail_stages.created_at', 'desc')
+            ->orderBy('etats.id', 'desc')
             ->get();
         return view('admin.stagiaires.index', [
             'stagiaires' => $stagiaires
@@ -38,11 +38,16 @@ class AccepteController extends Controller
         // Récupérer les données de la demande
         $demande = Demande::findOrFail($demande_id);
         $stagiaire = new Detail_stage();
-        return view('admin.stagiaires.form', [
+
+        // Retourner la vue avec les données
+        $view = view('admin.stagiaires.form', [
             'stagiaire' => $stagiaire,
             'demande' => $demande
         ]);
+
+        return $view;
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -54,7 +59,7 @@ class AccepteController extends Controller
         $date_debut = $request->input('date_debut');
         $dure = $request->input('dure');
         $arrayDate = date_parse_from_format('Y-m-d', $date_debut);
-        $date_fin = date('Y-m-d', mktime(0, 0, 0, $arrayDate['month'] + $dure, $arrayDate['day'], $arrayDate['year']));
+        $date_fin = date('Y-m-d', mktime(0, 0, 0, $arrayDate['month'], $arrayDate['day'] + $dure, $arrayDate['year']));
         $demande->update(['etat_id' => 3]);
         $stagiaire = new Detail_stage();
         $stagiaire->theme = $theme;

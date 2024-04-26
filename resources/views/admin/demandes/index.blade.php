@@ -3,66 +3,90 @@
 @section('title', 'Demandes')
 
 @section('content')
-    <!-- Department Area Starts -->
-    <section class="department-area section-padding4">
+    <!-- Specialist Area Starts -->
+    <section class="specialist-area section-padding">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
                     <div class="section-top text-center">
                         <h2>@yield('title')</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium sapiente nulla voluptatem
+                            corporis, mollitia adipisci, perferendis beatae illum dolor quia at a fugit vel, minus quae
+                            facilis. Obcaecati, voluptates nemo?</p>
                     </div>
+                    <div class="container">
+                        <form action="" method="get" class="d-flex gap-2">
+                            <input type="text" class="form-control" placeholder="Nom" name="nom_demande"
+                                value="{{ old('nom_demande', $input['nom_demande'] ?? '') }}">
+                            <input type="text" class="form-control" placeholder="Prénom" name="prenom_demande"
+                                value="{{ old('prenom_demande', $input['prenom_demande'] ?? '') }}">
+                            <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
+                        </form>
+                    </div>
+
+
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="department-slider owl-carousel">
-                        @foreach ($demandes as $demande)
-                            <div class="single-slide">
-                                <div class="slide-img">
-                                    <img src="{{ asset('images/finance.jpg') }}" alt="" class="img-fluid">
-                                    <div class="hover-state">
-                                        <a href="#"><i class=""></i></a>
-                                    </div>
-                                </div>
-                                <div class="single-department item-padding text-center">
+            <div class="row justify-content-center">
+                @forelse ($demandes as $demande)
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-doctor mb-4 mb-lg-0">
+                            <div class="doctor-img">
+                                <img src="{{ asset('images/doctor1.jpg') }}" alt="" class="img-fluid">
+                            </div>
+                            <div class="content-area">
+                                <div class="doctor-name text-center">
+                                    <p><strong>Status : </strong>{{ $demande->nom_etat }}</p>
                                     <h3>{{ $demande->nom_demande }}</h3>
                                     <h3>{{ $demande->prenom_demande }}</h3>
-                                    <h3>{{ $demande->email_demande }}</h3>
-                                    <h2>{{ $demande->image_demande }}</h2>
-                                    <h3>{{ $demande->cv }}</h3>
-                                    <h3>{{ $demande->lm }}</h3>
-                                    <h3>{{ $demande->autres }}</h3>
-                                    <h3>{{ $demande->nom_service }}</h3>
-                                    <h3>{{ $demande->nom_etat }}</h3>
-                                    <h3>{{ $demande->nom_niveau }}</h3>
-
-                                    <!-- Masquer les valeurs -->
+                                    <p>{{ $demande->email_demande }}</p>
+                                    <p>{{ $demande->image_demande }}</p>
+                                    <p>{{ $demande->cv }}</p>
+                                    <p>{{ $demande->lm }}</p>
+                                    <p>{{ $demande->autres }}</p>
+                                    <p>{{ $demande->nom_service }}</p>
+                                    <p>{{ $demande->nom_niveau }}</p>
                                     @if (false)
                                         <p>{{ $demande->service_id }}</p>
                                         <p>{{ $demande->etat_id }}</p>
                                         <p>{{ $demande->niveau_id }}</p>
                                     @endif
-
-                                    @if ($demande->nom_etat == 'En attente')
-                                        <form action="{{ route('admin.demande.update', $demande) }}" method="post">
-                                            @csrf
-                                            @method('put')
-                                            <button class="genric-btn info-border circle">Passer un entretien</button>
-                                        </form>
-                                    @else
-                                        <a href="{{route('admin.accepte.add', ['demande_id' => $demande->id])}}" class="genric-btn info-border circle">Accepter</a>
-                                    @endif
-                                    <form action="{{ route('admin.demande.destroy', $demande) }}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="genric-btn info-border circle">Refuser</button>
-                                    </form>
+                                </div>
+                                <div class="doctor-text text-center">
+                                    <ul class="doctor-icon d-inline-flex">
+                                        <li>
+                                            @if ($demande->nom_etat == 'En attente')
+                                                <form action="{{ route('admin.demande.update', $demande) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('put')
+                                                    <button class="genric-btn info-border circle">Entretien</button>
+                                                </form>
+                                            @else
+                                                <a class="genric-btn info-border circle"
+                                                    href="{{ route('admin.accepte.add', ['demande_id' => $demande->id]) }}">Accepter</a>
+                                            @endif
+                                        </li>
+                                        <li>
+                                            <form action="{{ route('admin.demande.destroy', $demande) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="genric-btn info-border circle">Refuser</button>
+                                            </form>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
-                </div>
+                @empty
+                    <div class="col">
+                        Aucun service ne correspond a votre recherche
+                    </div>
+                @endforelse
             </div>
+
         </div>
     </section>
+    <!-- Specialist Area Starts -->
 @endsection

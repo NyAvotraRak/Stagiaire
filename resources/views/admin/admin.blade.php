@@ -20,11 +20,8 @@
     <link rel="stylesheet" href="{{ asset('css/owl-carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/linearicons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/nice-select.css') }}">
+    <link rel="stylesheet" href="{{asset('css/nice-select.css')}}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style1.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/styleko.css') }}">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -36,71 +33,50 @@
 
     <!-- Header Area Starts -->
     <header class="header-area">
-        <div id="header" id="home" style="width: 93%">
+        <div id="header" id="home">
             <div class="container">
                 <div class="row align-items-center justify-content-between d-flex">
                     <div id="logo">
-                        <a href="index.html"><img src="{{ asset('images/logo/logo.png') }}" alt=""
-                                title="" /></a>
+                        <a href="index.html"><img src="assets/images/logo/logo.png" alt="" title="" /></a>
                     </div>
+                    @php
+                        $route = request()->route()->getName();
+                    @endphp
                     <nav id="nav-menu-container">
                         <ul class="nav-menu">
-                            <li class="menu-active"><a href="/">Home</a></li>
-                            <li><a href="/">departments</a></li>
-                            <li class="menu-has-children"><a href="">Stage</a>
+                            {{-- <li class="menu-active"><a href="index.html">Home</a></li> --}}
+                            <li><a href="{{route('admin.demande.index')}}" @class(['nav-link', 'active' => str_contains($route, 'demande.')])>Demandes</a></li>
+                            <li><a href="{{route('admin.service.index')}}" @class(['nav-link', 'active' => str_contains($route, 'service.')])>Departements</a></li>
+                            <li><a href="{{route('admin.accepte.index')}}" @class(['nav-link', 'active' => str_contains($route, 'accepte.')])>Stagiaires</a></li>
+                            <li class="menu-has-children"><a>Plus</a>
                                 <ul>
-                                    <li><a href="/">En ettente</a></li>
-                                    <li><a href="/">Entretien</a></li>
-                                    <li><a href="/">Demande refusée</a></li>
-                                    <li><a href="/">Stage en cours</a></li>
-                                    <li><a href="/">Stage achevé</a></li>
+                                    <li><a href="{{route('admin.fonction.index')}}">Fonctions</a></li>
+                                    <li><a href="{{route('admin.niveau.index')}}">Niveaux</a></li>
+                                    <li><a href="{{route('admin.ministere.index')}}">A propos</a></li>
                                 </ul>
                             </li>
-                            <li class="menu-has-children">{{ Auth::user()->name }}
+                            <li class="menu-has-children"><a>{{ Auth::user()->name }}</a>
                                 <ul>
-                                    <div class="mt-3 space-y-1">
-                                        <x-responsive-nav-link :href="route('profile.edit')">
-                                            {{ __('Profile') }}
-                                        </x-responsive-nav-link>
+                                    <li><a href="{{route('admin.utilisateur.index')}}">Gerer les comptes</a></li>
+                                    <li><a href="blog-home.html">
+                                                <x-responsive-nav-link :href="route('profile.edit')">
+                                                    {{ __('Profile') }}
+                                                </x-responsive-nav-link>
+                                        </a></li>
+                                    <li><a href="blog-details.html">
+                                            <!-- Authentication -->
+                                            <form method="POST" action="{{ route('logout') }}">
+                                                @csrf
 
-                                        <!-- Authentication -->
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-
-                                            <x-responsive-nav-link :href="route('logout')"
+                                                <x-responsive-nav-link :href="route('logout')"
                                                     onclick="event.preventDefault();
                                                                 this.closest('form').submit();">
-                                                {{ __('Se deconnecter') }}
-                                            </x-responsive-nav-link>
-                                        </form>
-                                    </div>
+                                                    {{ __('Se deconnecter') }}
+                                                </x-responsive-nav-link>
+                                            </form>
+                                        </a></li>
                                 </ul>
                             </li>
-                            {{-- <li><a href="/">Contact</a></li> --}}
-
-        {{-- <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Se deconnecter') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div> --}}
                         </ul>
                     </nav><!-- #nav-menu-container -->
                 </div>
@@ -109,71 +85,14 @@
     </header>
     <!-- Header Area End -->
 
-    @if (@session('success'))
+    {{-- @if (@session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
-    @endif
+    @endif --}}
 
     @yield('content')
 
-    <!-- Footer Area Starts -->
-    {{-- <footer class="footer-area section-padding">
-        <div class="footer-widget">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-2 col-lg-3">
-                    </div>
-                    <div class="col-xl-5 offset-xl-1 col-lg-6">
-                    </div>
-                    <div class="col-xl-3 offset-xl-1 col-lg-3">
-                        <div class="single-widge-home">
-                            <h3 class="mb-4">Facebook feed</h3>
-                            <div class="feed">
-                                <img src="{{ asset('images/feed1.jpg') }}" alt="feed">
-                                <img src="{{ asset('images/feed2.jpg') }}" alt="feed">
-                                <img src="{{ asset('images/feed3.jpg') }}" alt="feed">
-                                <img src="{{ asset('images/feed4.jpg') }}" alt="feed">
-                                <img src="{{ asset('images/feed5.jpg') }}" alt="feed">
-                                <img src="{{ asset('images/feed6.jpg') }}" alt="feed">
-                                <img src="{{ asset('images/feed7.jpg') }}" alt="feed">
-                                <img src="{{ asset('images/feed8.jpg') }}" alt="feed">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-6">
-                        <span>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;
-                            <script>
-                                document.write(new Date().getFullYear());
-                            </script> All rights reserved | This template is made with <i
-                                class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
-                                target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </span>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="social-icons">
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer> --}}
-    <!-- Footer Area End -->
 
     <!-- Javascript -->
     <script src="{{ asset('js/vendor/jquery-2.2.4.min.js') }}"></script>
@@ -185,8 +104,8 @@
     <script src="{{ asset('js/vendor/superfish.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 
-
-
 </body>
+
+</html>
 
 </html>

@@ -21,6 +21,7 @@ class DemandeRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd('rf');
         return [
             'nom_demande' => 'required|string|max:255',
             'prenom_demande' => 'required|string|max:255',

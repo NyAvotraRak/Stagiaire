@@ -3,6 +3,18 @@
 @section('title', 'Accueil')
 
 @section('content')
+    <!-- Banner Area Starts -->
+    <section class="banner-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <h1>Ministere de l'Interieur</h1>
+                    <h3>Titre Ministere de l'Interieur</h3>
+                    <p>Description du Ministere de l'Interieur</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Department Area Starts -->
     <section class="department-area section-padding4">
@@ -10,7 +22,8 @@
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
                     <div class="section-top text-center">
-                        <h2>Département populaire(Client)aaaa</h2>
+                        <h2>Nos services dans la Direction de Système d'Informations</h2>
+                        <p>Historiques de la DSI..........</p>
                     </div>
                 </div>
             </div>
@@ -20,9 +33,9 @@
                         @foreach ($services as $service)
                             <div class="single-slide">
                                 <div class="slide-img">
-                                    <img src="{{ asset('images/finance.jpg') }}" alt="" class="img-fluid">
+                                    <img src="{{ asset('images/patient2.png') }}" alt="" class="img-fluid" />
                                     <div class="hover-state">
-                                        <a href="#"><i class=""></i></a>
+                                        <a href="#"><i class="fa fa-stethoscope"></i></a>
                                     </div>
                                 </div>
                                 <div class="single-department item-padding text-center">
@@ -39,5 +52,4 @@
             </div>
         </div>
     </section>
-    <!-- Department Area end -->
 @endsection

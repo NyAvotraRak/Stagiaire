@@ -36,15 +36,15 @@ Route::get('/services/{slug}-{service}', [AcceuilController::class, 'show'])->na
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('service', ServiceController::class)->except(['show']);
-    // Route::resource('etat', EtatController::class)->except(['show']);
     Route::resource('ministere', MinistereController::class)->except(['show']);
     Route::resource('niveau', NiveauController::class)->except(['show']);
     Route::resource('fonction', FonctionController::class)->except(['show']);
-    Route::resource('demande', DemandeController::class)->except(['show', 'edit']);
+    Route::resource('demande', DemandeController::class)->except(['show', 'edit', 'store', 'create']);
     Route::resource('accepte', AccepteController::class)->except(['show', 'create', 'store']);
     Route::post('/accepte/store/{demande}', [AccepteController::class, 'store'])->name('accepte.store');
     Route::get('/accepte/{demande_id}', [AccepteController::class, 'add'])->name('accepte.add');
     Route::get('/attestation/{stagiaire}', [AttestationController::class, 'downloadPdfAttestation'])->name('attestation.downloadPdfAttestation');
+    Route::get('/utilisateur', [ProfileController::class, 'index'])->name('utilisateur.index');
 
 });
 
