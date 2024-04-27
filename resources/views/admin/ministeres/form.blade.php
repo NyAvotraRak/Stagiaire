@@ -14,22 +14,23 @@
                         <!-- Ajout de la classe "text-center" pour centrer le titre -->
                         <form class="vstack gap-5"
                             action="{{ route($ministere->exists ? 'admin.ministere.update' : 'admin.ministere.store', $ministere) }}"
-                            method="post">
+                            method="post" enctype="multipart/form-data">
                             @csrf
 
                             @method($ministere->exists ? 'put' : 'post')
                             <div class="form-group form-inline">
                                 @include('shared.input', [
-                                    'name' => 'titre',
-                                    'label' => 'Nom :',
-                                    'placeholder' => 'Entrer le nom',
-                                    'value' => old('titre', $ministere->titre),
-                                ])
-                                @include('shared.input', [
+                                    'type' => 'file',
                                     'name' => 'image_ministere',
                                     'label' => 'Image :',
                                     'placeholder' => 'image',
                                     'value' => old('image_ministere', $ministere->image_ministere)
+                                ])
+                                @include('shared.input', [
+                                    'name' => 'titre',
+                                    'label' => 'Nom :',
+                                    'placeholder' => 'Entrer le nom',
+                                    'value' => old('titre', $ministere->titre),
                                 ])
                                 @include('shared.input', [
                                     'type' => 'textarea',

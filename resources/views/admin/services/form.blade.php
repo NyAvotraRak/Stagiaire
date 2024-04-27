@@ -14,31 +14,36 @@
                         <!-- Ajout de la classe "text-center" pour centrer le titre -->
                         <form class="vstack gap-5"
                             action="{{ route($service->exists ? 'admin.service.update' : 'admin.service.store', $service) }}"
-                            method="post">
+                            method="post" enctype="multipart/form-data">
                             @csrf
 
                             @method($service->exists ? 'put' : 'post')
                             <div class="form-group form-inline">
+                                <div class="mr-5">
+                                    @include('shared.input', [
+                                        'type' => 'file',
+                                        'name' => 'image_service',
+                                        'label' => 'Image :',
+                                        'placeholder' => 'image',
+                                        'value' => old('image_service', $service->image_service),
+                                    ])
+                                </div>
                                 @include('shared.input', [
                                     'name' => 'nom_service',
                                     'label' => 'Nom :',
                                     'placeholder' => 'Entrer le nom',
                                     'value' => old('nom_service', $service->nom_service),
                                 ])
-                                @include('shared.input', [
-                                    'name' => 'image_service',
-                                    'label' => 'Image :',
-                                    'placeholder' => 'image',
-                                    'value' => old('image_service', $service->image_service),
-                                ])
-                                @include('shared.input', [
-                                    'type' => 'textarea',
-                                    'name' => 'description_service',
-                                    'label' => 'Description :',
-                                    'placeholder' => 'desc...',
-                                    'value' => old('description_service', $service->description_service),
-                                ])
+                                <!-- Ajoutez une marge à droite pour séparer les deux éléments -->
                             </div>
+
+                            @include('shared.input', [
+                                'type' => 'textarea',
+                                'name' => 'description_service',
+                                'label' => 'Description :',
+                                'placeholder' => 'desc...',
+                                'value' => old('description_service', $service->description_service),
+                            ])
                             <div class="text-center"> <!-- Ajout de la classe "text-center" pour centrer le bouton -->
                                 <button type="submit" class="genric-btn info-border circle margin-top-5">
                                     @if ($service->exists)

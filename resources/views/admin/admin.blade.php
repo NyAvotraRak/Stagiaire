@@ -44,7 +44,6 @@
                     @endphp
                     <nav id="nav-menu-container">
                         <ul class="nav-menu">
-                            {{-- <li class="menu-active"><a href="index.html">Home</a></li> --}}
                             <li><a href="{{route('admin.demande.index')}}" @class(['nav-link', 'active' => str_contains($route, 'demande.')])>Demandes</a></li>
                             <li><a href="{{route('admin.service.index')}}" @class(['nav-link', 'active' => str_contains($route, 'service.')])>Departements</a></li>
                             <li><a href="{{route('admin.accepte.index')}}" @class(['nav-link', 'active' => str_contains($route, 'accepte.')])>Stagiaires</a></li>

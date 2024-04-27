@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\MinistereRequest;
 use App\Models\Ministere;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MinistereController extends Controller
 {
@@ -35,7 +36,8 @@ class MinistereController extends Controller
      */
     public function store(MinistereRequest $request)
     {
-        $ministere = Ministere::create($request->validated());
+        $ministere = new Ministere();
+        $ministere = Ministere::create($this->extract_data($ministere, $request));
         return to_route('admin.ministere.index')->with('success', 'Le ministere a bien été crée');
     }
 
@@ -54,8 +56,23 @@ class MinistereController extends Controller
      */
     public function update(MinistereRequest $request, Ministere $ministere)
     {
-        $ministere->update($request->validated());
+        $ministere->update($this->extract_data($ministere, $request));
         return to_route('admin.ministere.index')->with('success', 'Le ministere a bien été modifié');
+    }
+
+    private function extract_data(Ministere $ministere, MinistereRequest $request)
+    {
+        $data = $request->validated();
+        /** @var Uploadedfile $image_ministere */
+        $image_ministere = $request->validated('image_ministere');
+        if ($image_ministere == null || $image_ministere->getError()) {
+            return $data;
+        }
+        if($ministere->image_ministere){
+            Storage::disk('public')->delete($ministere->image_ministere);
+        }
+        $data['image_ministere'] = $image_ministere->store('file', 'public');
+        return $data;
     }
 
     /**

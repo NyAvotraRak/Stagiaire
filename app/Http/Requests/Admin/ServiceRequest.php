@@ -24,9 +24,9 @@ class ServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom_service' => ['required', 'min:2', Rule::unique(Service::class)],
+            'nom_service' => ['required', 'min:2'],
             'description_service' => ['required', 'min:8'],
-            'image_service' => ['required', 'min:2']
+            'image_service' => ['required','image', 'mix:2000']
         ];
     }
 }

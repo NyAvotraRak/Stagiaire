@@ -24,9 +24,10 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'fonction_id' => 'nullable|exists:fonctions,id',
-            'service_id' => 'nullable|exists:services,id',
+            'fonction_id' => 'exists:fonctions,id',
+            'service_id' => 'exists:services,id',
             'password' => 'required|string|min:6',
+            'image_users' => 'nullable|image|max:2000',
         ];
     }
 }

@@ -18,35 +18,29 @@ class DemandeController extends Controller
     public function index(SearchDemandeRequest $request)
     {
         // Commencez par une requête Eloquent vide
-        $query = Demande::query();
+        $query = Demande::select('demandes.*', 'services.nom_service', 'etats.nom_etat', 'niveaux.nom_niveau')
+            ->join('services', 'demandes.service_id', '=', 'services.id')
+            ->join('etats', 'demandes.etat_id', '=', 'etats.id')
+            ->join('niveaux', 'demandes.niveau_id', '=', 'niveaux.id')
+            ->whereIn('etats.nom_etat', ['En attente', 'Entretien'])
+            ->orderBy('demandes.created_at', 'desc');
 
         // Vérifiez si le nom_demande est présent dans les données validées
-        if ($nom_demande = $request->validated('nom_demande')) {
+        if ($nom_demande = $request->validated()['nom_demande'] ?? null) {
             $query->where('nom_demande', 'like', "%{$nom_demande}%");
         }
 
         // Vérifiez si le prenom_demande est présent dans les données validées
-        if ($prenom_demande = $request->validated('prenom_demande')) {
+        if ($prenom_demande = $request->validated()['prenom_demande'] ?? null) {
             $query->where('prenom_demande', 'like', "%{$prenom_demande}%");
         }
-
-        // Ajoutez une jointure avec la table `etats`
-        $query->join('etats', 'demandes.etat_id', '=', 'etats.id');
-
-        // Ajoutez les conditions pour filtrer par l'état "En attente" ou "Entretien"
-        $query->where(function ($query) {
-            $query->where('etats.nom_etat', 'En attente')
-                ->orWhere('etats.nom_etat', 'Entretien');
-        });
-
-        // Triez les résultats par ID d'état de manière décroissante
-        $query->orderBy('etats.id', 'desc');
 
         // Exécutez la requête et récupérez les résultats
         $demandes = $query->get();
 
         return view('admin.demandes.index', compact('demandes'));
     }
+
 
 
 

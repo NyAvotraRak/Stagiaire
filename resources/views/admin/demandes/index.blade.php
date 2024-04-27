@@ -32,12 +32,15 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="single-doctor mb-4 mb-lg-0">
                             <div class="doctor-img">
-                                <img src="{{ asset('images/doctor1.jpg') }}" alt="" class="img-fluid">
+                                @if ($demande->image_demande)
+                                    <img src="{{ $demande->image_url() }}" alt="">
+                                @endif
                             </div>
                             <div class="content-area">
                                 <div class="doctor-name text-center">
                                     <p><strong>Status : </strong>{{ $demande->nom_etat }}</p>
                                     <h3>{{ $demande->nom_demande }}</h3>
+                                    <h3>{{ $demande->id }}</h3>
                                     <h3>{{ $demande->prenom_demande }}</h3>
                                     <p>{{ $demande->email_demande }}</p>
                                     <p>{{ $demande->image_demande }}</p>

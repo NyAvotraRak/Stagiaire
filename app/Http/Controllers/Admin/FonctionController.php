@@ -10,22 +10,26 @@ use Illuminate\Http\Request;
 
 class FonctionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(SearchFonctionRequest $request)
     {
-        $query = Fonction::query();
-        if($nom_fonction = $request->validated('nom_fonction')){
-            $query = $query->where('nom_fonction', 'like', "%{$nom_fonction}%");
+        // Commencez par une requête Eloquent vide
+        $query = Fonction::select('fonctions.*')
+            ->orderBy('fonctions.created_at', 'desc');
+
+        // Vérifiez si le nom_demande est présent dans les données validées
+        if ($nom_fonction = $request->validated()['nom_fonction'] ?? null) {
+            $query->where('nom_fonction', 'like', "%{$nom_fonction}%");
         }
-        if($role = $request->validated('role')){
-            $query = $query->where('role', 'like', "%{$role}%");
+
+        // Vérifiez si le prenom_demande est présent dans les données validées
+        if ($role = $request->validated()['role'] ?? null) {
+            $query->where('role', 'like', "%{$role}%");
         }
-        return view('admin.fonctions.index', [
-            'fonctions' => $query->get(),
-            'input' => $request->validated()
-        ]);
+
+        // Exécutez la requête et récupérez les résultats
+        $fonctions = $query->get();
+
+        return view('admin.fonctions.index', compact('fonctions'));
     }
 
     /**

@@ -10,19 +10,21 @@ use Illuminate\Http\Request;
 
 class NiveauController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(SearchNiveauRequest $request)
     {
-        $query = Niveau::query();
-        if($nom_niveau = $request->validated('nom_niveau')){
-            $query = $query->where('nom_niveau', 'like', "%{$nom_niveau}%");
+        // Commencez par une requête Eloquent vide
+        $query = Niveau::select('niveaux.*')
+            ->orderBy('niveaux.created_at', 'desc');
+
+        // Vérifiez si le nom_demande est présent dans les données validées
+        if ($nom_niveau = $request->validated()['nom_niveau'] ?? null) {
+            $query->where('nom_niveau', 'like', "%{$nom_niveau}%");
         }
-        return view('admin.niveaux.index', [
-            'niveaux' => $query->get(),
-            'input' => $request->validated()
-        ]);
+
+        // Exécutez la requête et récupérez les résultats
+        $niveaux = $query->get();
+
+        return view('admin.niveaux.index', compact('niveaux'));
     }
 
     /**

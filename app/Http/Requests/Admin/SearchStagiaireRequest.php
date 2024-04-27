@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Models\Ministere;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class MinistereRequest extends FormRequest
+class SearchStagiaireRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +22,10 @@ class MinistereRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'titre' => ['required', 'min:2'],
-            'description_ministere' => ['required', 'min:8'],
-            'image_ministere' => ['required','image']
+            'nom_stagiaire' => ['string', 'nullable'],
+            'prenom_stagiaire' => ['string', 'nullable'],
+            'date_debut' => ['date', 'nullable'],
+            'date_fin' => ['date', 'nullable']
         ];
     }
 }

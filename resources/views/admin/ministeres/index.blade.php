@@ -36,7 +36,6 @@
     </div>
     <!-- Preloader End -->
 
-    <!-- Header Area Starts -->
     <header class="header-area">
         <div id="header" id="home">
             <div class="container">
@@ -44,24 +43,31 @@
                     <div id="logo">
                         <a href="index.html"><img src="assets/images/logo/logo.png" alt="" title="" /></a>
                     </div>
+                    @php
+                        $route = request()->route()->getName();
+                    @endphp
                     <nav id="nav-menu-container">
                         <ul class="nav-menu">
-                            <li class="menu-active"><a href="index.html">Home</a></li>
-                            <li><a href="departments.html">departments</a></li>
-                            <li><a href="doctors.html">doctors</a></li>
-                            <li class="menu-has-children"><a href="">Pages</a>
+                            <li><a href="{{ route('admin.demande.index') }}" @class(['nav-link', 'active' => str_contains($route, 'demande.')])>Demandes</a>
+                            </li>
+                            <li><a href="{{ route('admin.service.index') }}"
+                                    @class(['nav-link', 'active' => str_contains($route, 'service.')])>Departements</a></li>
+                            <li><a href="{{ route('admin.accepte.index') }}"
+                                    @class(['nav-link', 'active' => str_contains($route, 'accepte.')])>Stagiaires</a></li>
+                            <li class="menu-has-children"><a>Plus</a>
                                 <ul>
-                                    <li><a href="about.html">about us</a></li>
-                                    <li><a href="elements.html">elements</a></li>
+                                    <li><a href="{{ route('admin.fonction.index') }}">Fonctions</a></li>
+                                    <li><a href="{{ route('admin.niveau.index') }}">Niveaux</a></li>
+                                    <li><a href="{{ route('admin.ministere.index') }}">A propos</a></li>
                                 </ul>
                             </li>
-                            <li class="menu-has-children">{{ Auth::user()->name }}
+                            <li class="menu-has-children"><a>{{ Auth::user()->name }}</a>
                                 <ul>
+                                    <li><a href="{{ route('admin.utilisateur.index') }}">Gerer les comptes</a></li>
                                     <li><a href="blog-home.html">
-                                            <div class="mt-3 space-y-1">
-                                                <x-responsive-nav-link :href="route('profile.edit')">
-                                                    {{ __('Profile') }}
-                                                </x-responsive-nav-link>
+                                            <x-responsive-nav-link :href="route('profile.edit')">
+                                                {{ __('Profile') }}
+                                            </x-responsive-nav-link>
                                         </a></li>
                                     <li><a href="blog-details.html">
                                             <!-- Authentication -->
@@ -83,7 +89,6 @@
             </div>
         </div>
     </header>
-    <!-- Header Area End -->
 
     <!-- Welcome Area Starts -->
     <section class="welcome-area section-padding3">
@@ -92,13 +97,14 @@
                 @foreach ($ministeres as $ministere)
                     <div class="col-lg-5 align-self-center">
                         <div class="welcome-img">
-                            <img src="{{ asset('images/doctor2.jpg') }}" alt="">
+                            @if ($ministere->image_ministere)
+                                <img src="{{$ministere->image_url()}}" alt="">
+                            @endif
                         </div>
                     </div>
                     <div class="col-lg-7">
                         <div class="welcome-text mt-5 mt-lg-0">
                             <h2>@yield('title')</h2>
-                            <h2>{{ $ministere->image_ministere }}</h2>
                             <h3>{{ $ministere->titre }}</h3>
                             <p>{{ $ministere->description_ministere }}</p>
                             <a href="{{ route('admin.ministere.edit', $ministere) }}"

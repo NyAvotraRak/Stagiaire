@@ -20,7 +20,9 @@
                 @foreach ($users as $user)
                     <div class="col-lg-5">
                         <div class="single-patient mb-4">
-                            <img src="{{ asset('images/patient1.png') }}" alt="">
+                            @if ($user->image_users)
+                                <img src="{{ $user->image_url() }}" alt="">
+                            @endif
                             <h3>{{ $user->name }}</h3>
                             @if ($user->service)
                                 <!-- Vérifie si la relation service est définie -->

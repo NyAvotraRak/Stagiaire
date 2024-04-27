@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class AttestationController extends Controller
 {
-    public function downloadPdfAttestation($stagiaire, $date_fin)
+    public function downloadPdfAttestation($stagiaire_theme, $stagiaire_date_fin)
     {
-        $stagiaire = Detail_stage::where('theme', $stagiaire)->firstOrFail();
+        $stagiaire = Detail_stage::where('theme', $stagiaire_theme)->firstOrFail();
         $stagiaire->demande->update([
             'etat_id' => 5,
         ]);

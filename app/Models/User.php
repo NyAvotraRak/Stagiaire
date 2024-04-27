@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -23,6 +24,7 @@ class User extends Authenticatable
         'fonction_id',
         'service_id',
         'password',
+        'image_users'
     ];
 
     /**
@@ -53,5 +55,10 @@ class User extends Authenticatable
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function image_url()
+    {
+        return Storage::url($this->image_users);
     }
 }

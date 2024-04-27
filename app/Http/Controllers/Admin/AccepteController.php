@@ -5,25 +5,48 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AccepteRequest;
 use App\Http\Requests\Admin\DemandeRequest;
+use App\Http\Requests\Admin\SearchStagiaireRequest;
 use App\Models\Demande;
 use App\Models\Detail_stage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AccepteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(SearchStagiaireRequest $request)
     {
-        $stagiaires = Detail_stage::select('detail_stages.*', 'demandes.*', 'niveaux.*', 'etats.*', 'services.*')
+        // Commencez par une requête Eloquent vide
+        $query = Detail_stage::select('detail_stages.*', 'demandes.image_demande', 'demandes.nom_demande', 'demandes.prenom_demande', 'demandes.email_demande', 'demandes.cv', 'demandes.lm', 'demandes.autres', 'services.nom_service', 'etats.nom_etat', 'niveaux.nom_niveau')
             ->join('demandes', 'detail_stages.demande_id', '=', 'demandes.id')
-            ->join('niveaux', 'demandes.niveau_id', '=', 'niveaux.id')
-            ->join('etats', 'demandes.etat_id', '=', 'etats.id')
             ->join('services', 'demandes.service_id', '=', 'services.id')
-            ->orderBy('etats.id', 'desc')
-            ->get();
+            ->join('etats', 'demandes.etat_id', '=', 'etats.id')
+            ->join('niveaux', 'demandes.niveau_id', '=', 'niveaux.id')
+            ->whereIn('etats.nom_etat', ['En cours', 'Fin', 'Terminé'])
+            ->orderBy('demandes.created_at', 'desc');
+
+        // Vérifiez si le nom_demande est présent dans les données validées
+        if ($nom_stagiaire = $request->validated()['nom_stagiaire'] ?? null) {
+            $query->where('nom_demande', 'like', "%{$nom_stagiaire}%");
+        }
+
+        // Vérifiez si le prenom_demande est présent dans les données validées
+        if ($prenom_stagiaire = $request->validated()['prenom_stagiaire'] ?? null) {
+            $query->where('prenom_demande', 'like', "%{$prenom_stagiaire}%");
+        }
+        // Vérifiez si le nom_demande est présent dans les données validées
+        if ($date_debut = $request->validated()['date_debut'] ?? null) {
+            $query->where('date_debut', '=', $date_debut);
+        }
+
+        // Vérifiez si le prenom_demande est présent dans les données validées
+        if ($date_fin = $request->validated()['date_fin'] ?? null) {
+            $query->where('date_fin', '=', $date_fin);
+        }
+
+        // Exécutez la requête et récupérez les résultats
+        $stagiaires = $query->get();
+
         return view('admin.stagiaires.index', [
             'stagiaires' => $stagiaires
         ]);

@@ -15,11 +15,12 @@
 
                         <h4 class="text-center">Intéressé par ce service :</h4>
                         <!-- Ajout de la classe "text-center" pour centrer le titre -->
-                        <form action="{{ route('acceuil.postule', $demande) }}" method="post" class="vstack gap-3">
+                        <form action="{{ route('acceuil.postule', $demande) }}" method="post" class="vstack gap-3" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group form-inline">
                                 <div class="form-group col-lg-6 col-md-6">
                                     @include('shared.input', [
+                                        'type' => 'file',
                                         'name' => 'image_demande',
                                         'label' => 'Image :',
                                         'placeholder' => 'Choisir un fichier',
@@ -40,18 +41,21 @@
                                 </div>
                                 <div class="form-group col-lg-6 col-md-6">
                                     @include('shared.input', [
+                                        'type' => 'file',
                                         'name' => 'cv',
                                         'label' => 'CV :',
                                         'placeholder' => 'CV',
                                         'value' => old('cv', $demande->cv),
                                     ])
                                     @include('shared.input', [
+                                        'type' => 'file',
                                         'name' => 'lm',
                                         'label' => 'LM :',
                                         'placeholder' => '...',
                                         'value' => old('lm', $demande->lm),
                                     ])
                                     @include('shared.input', [
+                                        'type' => 'file',
                                         'name' => 'autres',
                                         'label' => 'Autres :',
                                         'placeholder' => '....',

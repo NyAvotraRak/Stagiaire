@@ -26,7 +26,7 @@ class DemandeRequest extends FormRequest
             'nom_demande' => 'required|string|max:255',
             'prenom_demande' => 'required|string|max:255',
             'email_demande' => 'required|string|email|max:255|unique:demandes',
-            'image_demande' => 'required|string|max:255',
+            'image_demande' => 'required|image|max:2000',
             'cv' => 'required|string|max:255',
             'lm' => 'required|string|max:255',
             'autres' => 'required|string|max:255',
