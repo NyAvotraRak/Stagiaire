@@ -26,7 +26,7 @@ class ServiceRequest extends FormRequest
         return [
             'nom_service' => ['required', 'min:2'],
             'description_service' => ['required', 'min:8'],
-            'image_service' => ['required','image', 'mix:2000']
+            'image_service' => ['required','image']
         ];
     }
 }

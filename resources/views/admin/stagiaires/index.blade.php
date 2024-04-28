@@ -44,40 +44,46 @@
                                     <div class="row  mt-4">
                                         <div class="col-6">
                                             <div class="doctor-img border-radius-1">
+                                                <!-- Afficher l'image associée au stagiaire -->
                                                 @if ($stagiaire->image_demande)
-                                                    <img src="{{ $stagiaire->image_url() }}" alt="">
+                                                    <img style="width: 200px; height: 150px; object-fit:cover;"
+                                                        src="{{ $stagiaire->image_url() }}" alt="">
                                                 @endif
                                             </div>
 
                                         </div>
                                         <div class="col information">
-                                            <!-- <div class="single-doctor mb-4 mb-lg-0"> -->
-                                            <div class="content-area">
-                                                <div class="doctor-name text-center">
-                                                    @if ($stagiaire->nom_etat == 'Fin')
-                                                        <a href="{{ route('admin.attestation.downloadPdfAttestation', ['stagiaire_theme' => $stagiaire->theme, 'stagiaire_date_fin' => $stagiaire->date_fin]) }}"
-                                                            class="genric-btn info-border circle">Attestation</a>
-                                                    @endif
-                                                    <h3>Nom : {{ $stagiaire->nom_demande }}</h3>
-                                                    <h4>Prenom : {{ $stagiaire->prenom_demande }}</h4>
-                                                    <h6>Niveau : {{ $stagiaire->nom_niveau }}</h6>
-                                                    <h6>Email : {{ $stagiaire->email_demande }}</h6>
-                                                    @if ($stagiaire->cv)
-                                                        <img src="{{ $stagiaire->image_url() }}" alt="">
-                                                    @endif
-                                                    @if ($stagiaire->lm)
-                                                        <img src="{{ $stagiaire->image_url() }}" alt="">
-                                                    @endif
-                                                    @if ($stagiaire->autres)
-                                                        <img src="{{ $stagiaire->image_url() }}" alt="">
-                                                    @endif
-                                                </div>
-                                                <div class="doctor-text text-center">
-                                                    <p>Status : {{ $stagiaire->nom_etat }}</p>
-                                                    <p>Service : {{ $stagiaire->nom_service }}</p>
+                                            <div class="single-doctor mb-4 mb-lg-0">
+                                                <div class="content-area">
+                                                    <div class="doctor-name text-center">
+                                                        @if ($stagiaire->nom_etat == 'Fin' && $stagiaire->date_fin != now()->toDateString())
+                                                            <a href="{{ route('admin.attestation.downloadPdfAttestation', ['stagiaire' => $stagiaire->theme]) }}"
+                                                                class="genric-btn info-border circle">Attestation</a>
+                                                        @elseif ($stagiaire->nom_etat == 'Terminé' && $stagiaire->date_fin != now()->toDateString())
+                                                            <a href="{{ route('admin.attestation.downloadPdfAttestation', ['stagiaire' => $stagiaire->theme]) }}"
+                                                                class="genric-btn info-border circle">Duplicata attestation</a>
+                                                        @endif
+
+                                                        <h3>Nom : {{ $stagiaire->nom_demande }}</h3>
+                                                        <h4>Prenom : {{ $stagiaire->prenom_demande }}</h4>
+                                                        <h6>Niveau : {{ $stagiaire->nom_niveau }}</h6>
+                                                        <h6>Email : {{ $stagiaire->email_demande }}</h6>
+                                                        @if ($stagiaire->cv)
+                                                            <a href="{{ $stagiaire->cv_url() }}">cv</a>
+                                                        @endif
+                                                        @if ($stagiaire->lm)
+                                                            <a href="{{ $stagiaire->lm_url() }}">lm</a>
+                                                        @endif
+                                                        @if ($stagiaire->autres)
+                                                            <a href="{{ $stagiaire->autres_url() }}">autres</a>
+                                                        @endif
+                                                    </div>
+                                                    <div class="doctor-text text-center">
+                                                        <p>Status : {{ $stagiaire->nom_etat }}</p>
+                                                        <p>Service : {{ $stagiaire->nom_service }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <!-- </div> -->
 
                                         </div>
 
@@ -93,14 +99,6 @@
                                     <p class="">Description : {{ $stagiaire->description_theme }}</p>
                                     <p><strong>Date debut :</strong> {{ $stagiaire->date_debut }} , <strong>Date fin
                                             :</strong> {{ $stagiaire->date_fin }}</p>
-                                    <p><strong>Date actuelle :</strong> {{ now() }}</p>
-
-                                    @if ($stagiaire->date_fin === now())
-                                        <?php
-                                        // Mise à jour de l'état_id à 4 si la date de fin est égale à la date actuelle
-                                        $stagiaire->update(['etat_id' => 4]);
-                                        ?>
-                                    @endif
                                 </div>
                             </div>
                         </div>

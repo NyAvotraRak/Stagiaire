@@ -21,7 +21,7 @@
                     <div class="col-lg-5">
                         <div class="single-patient mb-4">
                             @if ($user->image_users)
-                                <img src="{{ $user->image_url() }}" alt="">
+                                <img style="width: 200px; height: 150px; object-fit:cover;" src="{{ $user->image_url() }}" alt="">
                             @endif
                             <h3>{{ $user->name }}</h3>
                             @if ($user->service)

@@ -33,26 +33,34 @@
                         <div class="single-doctor mb-4 mb-lg-0">
                             <div class="doctor-img">
                                 @if ($demande->image_demande)
-                                    <img src="{{ $demande->image_url() }}" alt="">
+                                    <img style="width: 200px; height: 150px; object-fit:cover;" src="{{ $demande->image_url() }}" alt="">
                                 @endif
                             </div>
                             <div class="content-area">
                                 <div class="doctor-name text-center">
-                                    <p><strong>Status : </strong>{{ $demande->nom_etat }}</p>
+                                    <h3><strong>Status : </strong>{{ $demande->nom_etat }}</h3>
                                     <h3>{{ $demande->nom_demande }}</h3>
-                                    <h3>{{ $demande->id }}</h3>
                                     <h3>{{ $demande->prenom_demande }}</h3>
-                                    <p>{{ $demande->email_demande }}</p>
-                                    <p>{{ $demande->image_demande }}</p>
-                                    <p>{{ $demande->cv }}</p>
-                                    <p>{{ $demande->lm }}</p>
-                                    <p>{{ $demande->autres }}</p>
-                                    <p>{{ $demande->nom_service }}</p>
-                                    <p>{{ $demande->nom_niveau }}</p>
+                                    <h3>{{ $demande->email_demande }}</h3>
+                                    <!-- Affichage des fichiers PDF -->
+                                    <p>
+                                        @if ($demande->cv)
+                                            <a href="{{ $demande->cv_url() }}" target="_blank">CV</a>
+                                        @endif
+                                        @if ($demande->lm)
+                                            <a href="{{ $demande->lm_url() }}" target="_blank">LM</a>
+                                        @endif
+                                        @if ($demande->autres)
+                                            <a href="{{ $demande->autres_url() }}"
+                                                target="_blank">Autres</a>
+                                        @endif
+                                    </p>
+                                    <h3>{{ $demande->nom_service }}</h3>
+                                    <h3>{{ $demande->nom_niveau }}</h3>
                                     @if (false)
-                                        <p>{{ $demande->service_id }}</p>
-                                        <p>{{ $demande->etat_id }}</p>
-                                        <p>{{ $demande->niveau_id }}</p>
+                                        <h3>{{ $demande->service_id }}</h3>
+                                        <h3>{{ $demande->etat_id }}</h3>
+                                        <h3>{{ $demande->niveau_id }}</h3>
                                     @endif
                                 </div>
                                 <div class="doctor-text text-center">

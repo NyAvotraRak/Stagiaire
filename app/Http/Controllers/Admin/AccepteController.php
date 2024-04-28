@@ -16,41 +16,53 @@ class AccepteController extends Controller
 {
     public function index(SearchStagiaireRequest $request)
     {
-        // Commencez par une requête Eloquent vide
-        $query = Detail_stage::select('detail_stages.*', 'demandes.image_demande', 'demandes.nom_demande', 'demandes.prenom_demande', 'demandes.email_demande', 'demandes.cv', 'demandes.lm', 'demandes.autres', 'services.nom_service', 'etats.nom_etat', 'niveaux.nom_niveau')
+        // Création de l'objet Carbon pour la date actuelle
+        $dateActuelle = Carbon::now()->toDateString();
+
+        // Mise à jour de l'état_id à 4 pour les demandes dont la date de fin est égale à la date actuelle
+        Demande::whereIn('id', function ($query) use ($dateActuelle) {
+            $query->select('demande_id')
+                ->from('detail_stages')
+                ->whereDate('date_fin', $dateActuelle);
+        })->update(['etat_id' => 4]);
+
+        // Récupération des stagiaires avec les conditions de recherche
+        $stagiaires = Detail_stage::select('detail_stages.*', 'demandes.image_demande', 'demandes.nom_demande', 'demandes.prenom_demande', 'demandes.email_demande', 'demandes.cv', 'demandes.lm', 'demandes.autres', 'services.nom_service', 'etats.nom_etat', 'niveaux.nom_niveau')
             ->join('demandes', 'detail_stages.demande_id', '=', 'demandes.id')
             ->join('services', 'demandes.service_id', '=', 'services.id')
             ->join('etats', 'demandes.etat_id', '=', 'etats.id')
             ->join('niveaux', 'demandes.niveau_id', '=', 'niveaux.id')
-            ->whereIn('etats.nom_etat', ['En cours', 'Fin', 'Terminé'])
-            ->orderBy('demandes.created_at', 'desc');
+            ->whereIn('etats.nom_etat', ['En cours', 'Fin', 'Terminé']);
 
-        // Vérifiez si le nom_demande est présent dans les données validées
+        // Filtrage supplémentaire si des paramètres de recherche sont présents
         if ($nom_stagiaire = $request->validated()['nom_stagiaire'] ?? null) {
-            $query->where('nom_demande', 'like', "%{$nom_stagiaire}%");
+            $stagiaires->where('nom_demande', 'like', "%{$nom_stagiaire}%");
         }
 
-        // Vérifiez si le prenom_demande est présent dans les données validées
         if ($prenom_stagiaire = $request->validated()['prenom_stagiaire'] ?? null) {
-            $query->where('prenom_demande', 'like', "%{$prenom_stagiaire}%");
+            $stagiaires->where('prenom_demande', 'like', "%{$prenom_stagiaire}%");
         }
-        // Vérifiez si le nom_demande est présent dans les données validées
+
         if ($date_debut = $request->validated()['date_debut'] ?? null) {
-            $query->where('date_debut', '=', $date_debut);
+            $stagiaires->where('date_debut', '=', $date_debut);
         }
 
-        // Vérifiez si le prenom_demande est présent dans les données validées
         if ($date_fin = $request->validated()['date_fin'] ?? null) {
-            $query->where('date_fin', '=', $date_fin);
+            $stagiaires->where('detail_stages.date_fin', '=', $date_fin);
         }
 
-        // Exécutez la requête et récupérez les résultats
-        $stagiaires = $query->get();
+        // Tri des résultats par date de création
+        $stagiaires->orderBy('etats.id', 'desc');
 
+        // Récupération des résultats
+        $stagiaires = $stagiaires->get();
+
+        // Retour de la vue avec les stagiaires
         return view('admin.stagiaires.index', [
             'stagiaires' => $stagiaires
         ]);
     }
+
 
 
     /**
@@ -75,26 +87,57 @@ class AccepteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(AccepteRequest $request, Demande $demande)
+    // {
+    //     $theme = $request->input('theme');
+    //     $description_theme = $request->input('description_theme');
+    //     $date_debut = $request->input('date_debut');
+    //     $dure = $request->input('dure');
+    //     $arrayDate = date_parse_from_format('Y-m-d', $date_debut);
+    //     $date_fin = date('Y-m-d', mktime(0, 0, 0, $arrayDate['month'], $arrayDate['day'] + $dure, $arrayDate['year']));
+    //     $demande->update(['etat_id' => 3]);
+    //     $stagiaire = new Detail_stage();
+    //     $stagiaire->theme = $theme;
+    //     $stagiaire->description_theme = $description_theme;
+    //     $stagiaire->date_debut = $date_debut;
+    //     $stagiaire->date_fin = $date_fin;
+    //     $stagiaire->demande_id = $demande->id;
+    //     $stagiaire->save();
+    //     return to_route('admin.accepte.index', [
+    //         'stagiaire' => $stagiaire
+    //     ])->with('success', 'Le stagiaire a bien été Enregistré');
+    // }
+
     public function store(AccepteRequest $request, Demande $demande)
     {
         $theme = $request->input('theme');
         $description_theme = $request->input('description_theme');
         $date_debut = $request->input('date_debut');
         $dure = $request->input('dure');
-        $arrayDate = date_parse_from_format('Y-m-d', $date_debut);
-        $date_fin = date('Y-m-d', mktime(0, 0, 0, $arrayDate['month'], $arrayDate['day'] + $dure, $arrayDate['year']));
+
+        // Création de l'objet Carbon pour la date de début
+        $dateDebutCarbon = Carbon::createFromFormat('Y-m-d', $date_debut);
+
+        // Calcul de la date de fin en ajoutant la durée
+        $dateFinCarbon = $dateDebutCarbon->copy()->addDays($dure);
+
+        // Mise à jour de l'état de la demande
         $demande->update(['etat_id' => 3]);
+
+        // Création du stagiaire avec les dates formatées en Carbon
         $stagiaire = new Detail_stage();
         $stagiaire->theme = $theme;
         $stagiaire->description_theme = $description_theme;
-        $stagiaire->date_debut = $date_debut;
-        $stagiaire->date_fin = $date_fin;
+        $stagiaire->date_debut = $dateDebutCarbon;
+        $stagiaire->date_fin = $dateFinCarbon;
         $stagiaire->demande_id = $demande->id;
         $stagiaire->save();
-        return to_route('admin.accepte.index', [
-            'stagiaire' => $stagiaire
-        ])->with('success', 'Le stagiaire a bien été Enregistré');
+
+        // Redirection avec un message de succès
+        return redirect()->route('admin.accepte.index')
+            ->with('success', 'Le stagiaire a bien été enregistré');
     }
+
 
     /**
      * Show the form for editing the specified resource.

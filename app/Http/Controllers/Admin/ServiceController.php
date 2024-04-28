@@ -66,7 +66,7 @@ class ServiceController extends Controller
     {
         $service = new Service();
         $service = Service::create($this->extract_data($service, $request));
-        return to_route('admin.service.index')->with('success', 'Le service a bien été crée');
+        return redirect()->route('admin.service.index')->with('success', 'Le service a bien été créé');
     }
 
     /**
@@ -88,11 +88,37 @@ class ServiceController extends Controller
         return to_route('admin.service.index')->with('success', 'Le service a bien été modifié');
     }
 
+    // private function extract_data(Service $service, ServiceRequest $request)
+    // {
+    //     $data = $request->validated();
+    //     /** @var Uploadedfile|null $image_service */
+    //     $image_service = $request->validated('image_service');
+    //     if ($image_service == null || $image_service->getError()) {
+    //         return $data;
+    //     }
+    //     if ($service->image_service) {
+    //         Storage::disk('public')->delete($service->image_service);
+    //     }
+    //     $data['image_service'] = $image_service->store('file', 'public');
+    //     return $data;
+    // }
+    // private function extract_data(Service $service, ServiceRequest $request)
+    // {
+    //     $data = $request->all();
+    //     $image_service = $request->file('image_service');
+    //     if ($image_service == null || $image_service->getError()) {
+    //         return $data;
+    //     }
+    //     if ($service->image_service) {
+    //         Storage::disk('public')->delete($service->image_service);
+    //     }
+    //     $data['image_service'] = $image_service->store('file', 'public');
+    //     return $data;
+    // }
     private function extract_data(Service $service, ServiceRequest $request)
     {
         $data = $request->validated();
-        /** @var Uploadedfile|null $image_service */
-        $image_service = $request->validated('image_service');
+        $image_service = $request->file('image_service');
         if ($image_service == null || $image_service->getError()) {
             return $data;
         }

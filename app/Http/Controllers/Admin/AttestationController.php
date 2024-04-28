@@ -9,16 +9,25 @@ use Illuminate\Http\Request;
 
 class AttestationController extends Controller
 {
-    public function downloadPdfAttestation($stagiaire_theme, $stagiaire_date_fin)
+    public function downloadPdfAttestation($stagiaire)
     {
-        $stagiaire = Detail_stage::where('theme', $stagiaire_theme)->firstOrFail();
+        // Trouver le stagiaire par le thème
+        $stagiaire = Detail_stage::where('theme', $stagiaire)->firstOrFail();
+        // $stagiaire = Detail_stage::where('theme', $stagiaire)->with('demande')->firstOrFail();
+
+        // Mettre à jour l'état de la demande du stagiaire
         $stagiaire->demande->update([
             'etat_id' => 5,
         ]);
-        $pdf = Pdf::loadView('admin.pdf.attestation', [
+        // dd($stagiaire->demande->etat_id);
+        // Générer le PDF
+        $pdf = PDF::loadView('admin.pdf.attestation', [
             'stagiaire' => $stagiaire
         ]);
-        return $pdf->download('attestation.pdf');
-        // return $pdf->stream();
+
+        // Télécharger le PDF
+        // return $pdf->download('attestation.pdf');
+        return $pdf->stream();
+        // Vous pouvez également utiliser $pdf->stream() pour afficher le PDF dans le navigateur au lieu de le télécharger directement.
     }
 }

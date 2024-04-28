@@ -33,7 +33,7 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="single-feature text-center item-padding">
                             @if ($service->image_service)
-                                <img src="{{$service->image_url()}}" alt="">
+                                <img style="width: 200px; height: 150px; object-fit:cover;" src="{{$service->image_url()}}" alt="">
                             @endif
                             <h3>{{ $service->nom_service }}</h3>
                             <p>{{ $service->description_service }}</p>

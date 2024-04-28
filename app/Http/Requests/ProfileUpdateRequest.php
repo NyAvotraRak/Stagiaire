@@ -26,8 +26,9 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'image_users' => ['required', 'image', 'max:2000'],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
             'fonction_id' => ['required', 'exists:fonctions,id'],
+            'password' => 'required|string|min:6',
             'service_id' => ['required', 'exists:services,id']
         ];
     }

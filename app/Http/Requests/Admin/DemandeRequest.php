@@ -21,15 +21,14 @@ class DemandeRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd('rf');
         return [
             'nom_demande' => 'required|string|max:255',
             'prenom_demande' => 'required|string|max:255',
             'email_demande' => 'required|string|email|max:255|unique:demandes',
             'image_demande' => 'required|image|max:2000',
-            'cv' => 'required|string|max:255',
-            'lm' => 'required|string|max:255',
-            'autres' => 'required|string|max:255',
+            'cv' => 'required|mimes:pdf|max:2000', // Accepter uniquement les fichiers PDF
+            'lm' => 'required|mimes:pdf|max:2000', // Accepter uniquement les fichiers PDF
+            'autres' => 'required|mimes:pdf|max:2000', // Accepter uniquement les fichiers PDF
             'service_id' => 'required|exists:services,id',
             'etat_id' => 'required|exists:etats,id',
             'niveau_id' => 'required|exists:niveaux,id'

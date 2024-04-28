@@ -98,7 +98,7 @@
                     <div class="col-lg-5 align-self-center">
                         <div class="welcome-img">
                             @if ($ministere->image_ministere)
-                                <img src="{{$ministere->image_url()}}" alt="">
+                                <img style="width: 200px; height: 150px; object-fit:cover;" src="{{$ministere->image_url()}}" alt="">
                             @endif
                         </div>
                     </div>

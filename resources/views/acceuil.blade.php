@@ -33,13 +33,12 @@
                         @foreach ($services as $service)
                             <div class="single-slide">
                                 <div class="slide-img">
-                                    <img src="{{ asset('images/patient2.png') }}" alt="" class="img-fluid" />
-                                    <div class="hover-state">
-                                        <a href="#"><i class="fa fa-stethoscope"></i></a>
-                                    </div>
+                                    @if ($service->image_service)
+                                        <img style="width: 200px; height: 150px; object-fit:cover;"
+                                            src="{{ $service->image_url() }}" alt="">
+                                    @endif
                                 </div>
                                 <div class="single-department item-padding text-center">
-                                    <h2>{{ $service->image_service }}</h2>
                                     <h2>{{ $service->nom_service }}</h2>
                                     <p>{{ $service->description_service }}</p>
                                     <a href="{{ route('acceuil.show', ['slug' => $service->getSlug(), 'service' => $service]) }}"
