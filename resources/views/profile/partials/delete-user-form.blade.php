@@ -24,7 +24,7 @@
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                {{ __('Une fois que votre compte est supprimé, toutes ses ressources et données seront définitivement effacées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.') }}
             </p>
 
             <div class="mt-6">
@@ -43,11 +43,11 @@
 
             <div class="mt-6 flex justify-end">
                 <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
+                    {{ __('Annuler') }}
                 </x-secondary-button>
 
                 <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
+                    {{ __('Supprimer le compte') }}
                 </x-danger-button>
             </div>
         </form>

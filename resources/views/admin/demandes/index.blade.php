@@ -14,13 +14,19 @@
                             corporis, mollitia adipisci, perferendis beatae illum dolor quia at a fugit vel, minus quae
                             facilis. Obcaecati, voluptates nemo?</p>
                     </div>
-                    <div class="container">
+                    <div class="mb-5">
                         <form action="" method="get" class="d-flex gap-2">
-                            <input type="text" class="form-control" placeholder="Nom" name="nom_demande"
-                                value="{{ old('nom_demande', $input['nom_demande'] ?? '') }}">
-                            <input type="text" class="form-control" placeholder="Prénom" name="prenom_demande"
-                                value="{{ old('prenom_demande', $input['prenom_demande'] ?? '') }}">
-                            <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
+                            <div class="mr-5">
+                                <input type="text" class="form-control" placeholder="Nom" name="nom_demande"
+                                    value="{{ old('nom_demande', $input['nom_demande'] ?? '') }}">
+                            </div>
+                            <div class="mr-5">
+                                <input type="text" class="form-control" placeholder="Prénom" name="prenom_demande"
+                                    value="{{ old('prenom_demande', $input['prenom_demande'] ?? '') }}">
+                            </div>
+                            <div class="">
+                                <button style="float: right" type="submit" class="btn btn-primary btn-sm">Rechercher</button>
+                            </div>
                         </form>
                     </div>
 
@@ -33,15 +39,16 @@
                         <div class="single-doctor mb-4 mb-lg-0">
                             <div class="doctor-img">
                                 @if ($demande->image_demande)
-                                    <img style="width: 200px; height: 150px; object-fit:cover;" src="{{ $demande->image_url() }}" alt="">
+                                    <img style="width: 100%; height: 150px; object-fit:cover;"
+                                        src="{{ $demande->image_url() }}" alt="">
                                 @endif
                             </div>
                             <div class="content-area">
                                 <div class="doctor-name text-center">
-                                    <h3><strong>Status : </strong>{{ $demande->nom_etat }}</h3>
+                                    <p><strong>Status : </strong>{{ $demande->nom_etat }}</p>
                                     <h3>{{ $demande->nom_demande }}</h3>
                                     <h3>{{ $demande->prenom_demande }}</h3>
-                                    <h3>{{ $demande->email_demande }}</h3>
+                                    <p>{{ $demande->email_demande }}</p>
                                     <!-- Affichage des fichiers PDF -->
                                     <p>
                                         @if ($demande->cv)
@@ -51,12 +58,11 @@
                                             <a href="{{ $demande->lm_url() }}" target="_blank">LM</a>
                                         @endif
                                         @if ($demande->autres)
-                                            <a href="{{ $demande->autres_url() }}"
-                                                target="_blank">Autres</a>
+                                            <a href="{{ $demande->autres_url() }}" target="_blank">Autres</a>
                                         @endif
                                     </p>
-                                    <h3>{{ $demande->nom_service }}</h3>
-                                    <h3>{{ $demande->nom_niveau }}</h3>
+                                    <p>{{ $demande->nom_service }}</p>
+                                    <p>{{ $demande->nom_niveau }}</p>
                                     @if (false)
                                         <h3>{{ $demande->service_id }}</h3>
                                         <h3>{{ $demande->etat_id }}</h3>

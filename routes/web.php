@@ -4,15 +4,12 @@ use App\Http\Controllers\AcceuilController;
 use App\Http\Controllers\Admin\AccepteController;
 use App\Http\Controllers\Admin\AttestationController;
 use App\Http\Controllers\Admin\DemandeController;
-use App\Http\Controllers\Admin\EtatController;
 use App\Http\Controllers\Admin\FonctionController;
 use App\Http\Controllers\Admin\MinistereController;
 use App\Http\Controllers\Admin\NiveauController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ServiceController as ControllersServiceController;
 use Illuminate\Support\Facades\Route;
 
 /*

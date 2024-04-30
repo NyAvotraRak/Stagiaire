@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('css/linearicons.css') }}">
     <link rel="stylesheet" href="{{asset('css/nice-select.css')}}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styleko.css') }}">
 </head>
 
 <body>
@@ -33,7 +34,7 @@
 
     <!-- Header Area Starts -->
     <header class="header-area">
-        <div id="header" id="home">
+        <div id="header" id="home" class="custom-header">
             <div class="container">
                 <div class="row align-items-center justify-content-between d-flex">
                     <div id="logo">

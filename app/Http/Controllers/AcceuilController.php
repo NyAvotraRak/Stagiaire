@@ -126,7 +126,7 @@ class AcceuilController extends Controller
     {
         // Créer une nouvelle demande en utilisant les données validées du formulaire
         $demande = Demande::create($this->extract_data($request));
-        $pdfMimeType = $request->file('cv')->getClientMimeType();
+        // $pdfMimeType = $request->file('cv')->getClientMimeType();
 
         // Rediriger l'utilisateur vers la page d'accueil après avoir créé la demande
         return redirect()->route('acceuil.index')->with('success', 'La demande a bien été créée');

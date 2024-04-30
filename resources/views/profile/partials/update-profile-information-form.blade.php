@@ -18,7 +18,7 @@
         @method('patch')
 
         <div>
-            <x-input-label for="image_users" :value="__('Image')" />
+            <x-input-label for="image_users" :value="__('Photo')" />
             <x-text-input id="image_users" name="image_users" type="file" class="mt-1 block w-full" :value="old('image_users', $user->image_users)"
                 required autofocus autocomplete="image_users" />
             <x-input-error class="mt-2" :messages="$errors->get('image_users')" />
@@ -32,7 +32,7 @@
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('E-mail')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)"
                 required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
@@ -72,17 +72,17 @@
             <!-- Unverified Email -->
             <div>
                 <p class="text-sm mt-2 text-gray-800">
-                    {{ __('Your email address is unverified.') }}
+                    {{ __('Votre adresse e-mail n\'est pas vérifiée.') }}
 
                     <button form="send-verification"
                         class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        {{ __('Click here to re-send the verification email.') }}
+                        {{ __('Cliquez ici pour renvoyer l\'e-mail de vérification.') }}
                     </button>
                 </p>
 
                 @if (session('status') === 'verification-link-sent')
                     <p class="mt-2 font-medium text-sm text-green-600">
-                        {{ __('A new verification link has been sent to your email address.') }}
+                        {{ __('Un nouveau lien de vérification a été envoyé à votre adresse e-mail.') }}
                     </p>
                 @endif
             </div>

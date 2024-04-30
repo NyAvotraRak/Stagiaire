@@ -4,7 +4,7 @@
 
         <!-- Image -->
         <div>
-            <x-input-label for="image_users" :value="__('Image')" />
+            <x-input-label for="image_users" :value="__('Photo')" />
             <x-text-input id="image_users" class="block mt-1 w-full" type="file" name="image_users" :value="old('image_users')" required autofocus autocomplete="image_users" />
             <x-input-error :messages="$errors->get('image_users')" class="mt-2" />
         </div>
@@ -18,7 +18,7 @@
 
         <!-- Email Address -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('E-mail')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
