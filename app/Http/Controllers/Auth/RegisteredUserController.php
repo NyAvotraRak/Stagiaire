@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\RegisterRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -40,19 +41,23 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(ProfileUpdateRequest $request): RedirectResponse
+    public function store(RegisterRequest $request): RedirectResponse
     {
+        // Crée une nouvelle instance d'utilisateur
         $user = new User();
 
-        // Hasher le mot de passe avant de l'assigner à l'utilisateur
-        $hashedPassword = Hash::make($request->input('password'));
+        // Extraction des données du formulaire et création de l'utilisateur avec mot de passe hashé
+        $userData = $this->extract_data($user, $request);
+        $userData['password'] = bcrypt($request->input('password')); // Hashage du mot de passe
+        $user = User::create($userData);
 
-        $user = User::create($this->extract_data($user, $request));
-
+        // Émettre un événement pour indiquer l'enregistrement de l'utilisateur
         event(new Registered($user));
 
+        // Redirection vers la page de connexion avec un message de succès
         return redirect()->route('login')->with('success', 'Votre compte a été créé avec succès. Veuillez vous connecter.');
     }
+
 
     // private function extract_data(User $user, ProfileUpdateRequest $request)
     // {
@@ -86,28 +91,27 @@ class RegisteredUserController extends Controller
 
     //     return $data;
     // }
-    private function extract_data(User $user, ProfileUpdateRequest $request)
-{
-    $data = $request->validated();
+    private function extract_data(User $user, RegisterRequest $request)
+    {
+        $data = $request->validated();
 
-    // Vérifie si une image a été téléchargée
-    if ($request->hasFile('image_users')) {
-        // Obtient l'objet UploadedFile de l'image
-        $image_users = $request->file('image_users');
+        // Vérifie si une image a été téléchargée
+        if ($request->hasFile('image_users')) {
+            // Obtient l'objet UploadedFile de l'image
+            $image_users = $request->file('image_users');
 
-        // Vérifie si l'objet UploadedFile n'est pas nul et s'il n'y a pas d'erreur lors du téléchargement
-        if ($image_users !== null && !$image_users->getError()) {
-            // Si l'utilisateur a déjà une image enregistrée, supprimez-la
-            if ($user->image_users) {
-                Storage::disk('public')->delete($user->image_users);
+            // Vérifie si l'objet UploadedFile n'est pas nul et s'il n'y a pas d'erreur lors du téléchargement
+            if ($image_users !== null && !$image_users->getError()) {
+                // Si l'utilisateur a déjà une image enregistrée, supprimez-la
+                if ($user->image_users) {
+                    Storage::disk('public')->delete($user->image_users);
+                }
+
+                // Stocke la nouvelle image et met à jour les données avec le chemin d'accès
+                $data['image_users'] = $image_users->store('file', 'public');
             }
-
-            // Stocke la nouvelle image et met à jour les données avec le chemin d'accès
-            $data['image_users'] = $image_users->store('file', 'public');
         }
+
+        return $data;
     }
-
-    return $data;
-}
-
 }

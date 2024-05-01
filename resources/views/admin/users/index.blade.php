@@ -3,49 +3,94 @@
 @section('title', 'Tous les utilisateurs')
 
 @section('content')
-    <!-- Patient Area Starts -->
-    <section class="patient-area section-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 offset-lg-3">
-                    <div class="section-top text-center">
-                        <h2>@yield('title')</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non eius doloribus error sit quis veniam
-                            laudantium, architecto reprehenderit, temporibus nihil culpa laborum praesentium modi quaerat
-                            inventore unde nesciunt nulla delectus.</p>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Tous les Utilisateurs</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                        </ol>
                     </div>
                 </div>
-            </div>
-            <div class="row justify-content-center">
-                @foreach ($users as $user)
-                    <div class="col-lg-5">
-                        <div class="single-patient mb-4">
-                            @if ($user->image_users)
-                                <img style="width: 200px; height: 150px; object-fit:cover;" src="{{ $user->image_url() }}" alt="">
-                            @endif
-                            <h3>{{ $user->name }}</h3>
-                            @if ($user->service)
-                                <!-- Vérifie si la relation service est définie -->
-                                <h5>{{ $user->service->nom_service }}</h5>
-                            @else
-                                <p>Aucun service associé</p>
-                            @endif
-                            @if ($user->fonction)
-                                <!-- Vérifie si la relation fonction est définie -->
-                                <h5>{{ $user->fonction->nom_fonction }}</h5>
-                            @else
-                                <p>Aucune fonction associée</p>
-                            @endif
-                            <p class="pt-3">{{ $user->email }}</p>
-                            <div class="text-center"> <!-- Ajout de la classe "text-center" pour centrer le contenu -->
-                                <ul class="doctor-icon d-inline-flex">
-                                    <!-- Modification de la classe pour afficher les éléments en ligne -->
-                                    <li class="mr-3"><a href="{{ route('profile.edit') }}">Gerer mon compte</a></li>
-                                </ul>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="card card-solid">
+                <div class="card-body pb-0">
+                    <div class="row justify-content-center">
+                        @foreach ($users as $user)
+                            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                <div class="card bg-light d-flex flex-fill">
+                                    <div class="card-body pt-0">
+                                        <div class="row">
+                                            <div class="col-7"><br>
+                                                <h2 class="lead"><b>{{ $user->name }}</b></h2>
+                                                <ul class="ml-4 mb-0 fa-ul text-muted"><br>
+                                                    <li class="small">
+                                                        @if ($user->service)
+                                                            <span class="fa-li"><i class="fas fa-briefcase"
+                                                                    style="color: rgb(0, 160, 5);"></i></span>{{ $user->service->nom_service }}
+                                                        @else
+                                                            <p>De aona ny fandeany ee</p>
+                                                        @endif
+                                                    </li>
+                                                    <li class="small">
+                                                        @if ($user->fonction)
+                                                            <span class="fa-li"><i class="fas fa-lg fa-building"
+                                                                    style="color: rgb(0, 160, 5);"></i></span>{{ $user->fonction->nom_fonction }}
+                                                        @else
+                                                            <p>De maninona</p>
+                                                        @endif
+                                                    </li>
+                                                    <li class="small"><span class="fa-li"><i class="fas fa-envelope"
+                                                                style="color: rgb(0, 160, 5);"></i></span>{{ $user->email }}
+                                                    </li>
+                                                    <li class="small"><span class="fa-li"><i class="fas fa-user"
+                                                                style="color: rgb(0, 160, 5);"></i></span>{{ $user->fonction->role }}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-5 text-center">
+                                                @if ($user->image_users)
+                                                    <img class="img-circle img-fluid"
+                                                        style="width: 200px; height: 150px; object-fit:cover;"
+                                                        src="{{ $user->image_url() }}" alt="">
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row justify-content-end">
+                                            <div class="">
+                                                <form action="{{ route('admin.users.destroy', $user) }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="btn btn-reset">
+                                                        <span class="mr-5"><i class="fas fa-trash-alt"
+                                                                style="color: rgb(255, 14, 14);">Supprimé</i></span></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
+                    <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
             </div>
-    </section>
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 @endsection

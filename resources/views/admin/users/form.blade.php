@@ -1,4 +1,4 @@
-<section>
+{{-- <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             Informations du profil
@@ -46,4 +46,4 @@
             @endif
         </div>
     </form>
-</section>
+</section> --}}

@@ -3,31 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function destroy(User $user)
     {
-        return view('admin.users.form');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $user->delete();
+        // return to_route('admin.utilisateur.index')->with('success', 'L\utilisateur a bien été Supprimé');
+        return redirect()->route('admin.utilisateur.index')->with('success', 'L\utilisateur a bien été supprimé');
     }
 }

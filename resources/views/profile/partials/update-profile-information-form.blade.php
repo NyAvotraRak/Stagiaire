@@ -13,16 +13,23 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update', $user) }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
-        <div>
+        {{-- <div>
             <x-input-label for="image_users" :value="__('Photo')" />
             <x-text-input id="image_users" name="image_users" type="file" class="mt-1 block w-full" :value="old('image_users', $user->image_users)"
                 required autofocus autocomplete="image_users" />
             <x-input-error class="mt-2" :messages="$errors->get('image_users')" />
+        </div> --}}
+        <div>
+            <x-input-label for="image_users" :value="__('Image de profil')" />
+            <input id="image_users" name="image_users" type="file" class="mt-1 block w-full" accept="image/*"
+                value="{{ old('image_users', $user->image_users) }}" />
+            <x-input-error :messages="$errors->updateProfile->get('image_users')" class="mt-2" />
         </div>
+
 
         <div>
             <x-input-label for="name" :value="__('Nom')" />

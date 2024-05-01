@@ -39,7 +39,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('fonction', FonctionController::class)->except(['show']);
     Route::resource('demande', DemandeController::class)->except(['show', 'edit', 'store', 'create']);
     Route::resource('accepte', AccepteController::class)->except(['show', 'create', 'store']);
-    Route::resource('utilisateur', UserController::class)->except(['show', 'create', 'index']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::post('/accepte/store/{demande}', [AccepteController::class, 'store'])->name('accepte.store');
     Route::get('/accepte/{demande_id}', [AccepteController::class, 'add'])->name('accepte.add');
     Route::get('/attestation/{stagiaire}', [AttestationController::class, 'downloadPdfAttestation'])->name('attestation.downloadPdfAttestation');

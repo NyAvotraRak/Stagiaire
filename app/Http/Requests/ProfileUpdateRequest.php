@@ -15,20 +15,13 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd('tr');
-        // return [
-        //     'image_users' => ['required', 'string', 'max:255'],
-        //     'name' => ['required', 'string', 'max:255'],
-        //     'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-        //     'fonction_id' => ['required', 'exists:fonctions,id'],
-        //     'service_id' => ['required', 'exists:services,id']
-        // ];
+        // dd('er');
         return [
             'image_users' => ['required', 'image', 'max:2000'],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'fonction_id' => ['required', 'exists:fonctions,id'],
-            'password' => 'required|string|min:6',
+            // 'password' => 'required|string|min:6',
             'service_id' => ['required', 'exists:services,id']
         ];
     }

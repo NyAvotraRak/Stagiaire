@@ -1,42 +1,3 @@
-{{-- @php
-    $label ??= ucfirst($name);
-    $type ??= 'text';
-    $class ??= null;
-    $name ??= '';
-    $value ??= '';
-    $placeholder ??= '';
-@endphp
-<div @class(["form-group, $class"])></div>
-<label for="{{ $name }}">{{ $label }}</label>
-@if ($type == 'file')
-    <input class='mt-1 block w-full @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}'
-        name='{{ $name }}' placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''"
-        onblur="this.placeholder = '{{ $placeholder }}'" value='{{ old($name, $value) }}'>
-@elseif ($type == 'email')
-    <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}'
-        name='{{ $name }}' placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''"
-        onblur="this.placeholder = '{{ $placeholder }}'" value='{{ old($name, $value) }}'>
-@elseif ($type == 'date')
-    <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}'
-        name='{{ $name }}' value='{{ old($name, $value) }}'>
-@elseif ($type == 'number')
-    <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}'
-        name='{{ $name }}' value='{{ old($name, $value) }}'>
-@elseif ($type == 'textarea')
-    <textarea class='form-control @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}'
-        name='{{ $name }}' placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''"
-        onblur="this.placeholder = '{{ $placeholder }}'">{{ old($name, $value) }}</textarea>
-@else
-    <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}'
-        name='{{ $name }}' placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''"
-        onblur="this.placeholder = '{{ $placeholder }}'" value='{{ old($name, $value) }}'>
-@endif
-
-@error($name)
-    <div class="invalid-feedback">
-        {{ $message }}
-    </div>
-@enderror --}}
 @php
     $label ??= ucfirst($name);
     $type ??= 'text';
@@ -51,23 +12,70 @@
 
     @switch($type)
         @case('file')
-            <input class="form-control @error($name) is-invalid @enderror" type="{{ $type }}" id="{{ $name }}" name="{{ $name }}" placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ $placeholder }}'" value="{{ old($name, $value) }}">
-            @break
+            <div class="input-group mb-3 @error($name) is-invalid @enderror">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-file"></i></span>
+                </div>
+                <input class="form-control @error($name) is-invalid @enderror" type="{{ $type }}" id="{{ $name }}"
+                    name="{{ $name }}" placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = '{{ $placeholder }}'" value="{{ old($name, $value) }}">
+            </div>
+        @break
+
         @case('email')
-            <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}' name='{{ $name }}' placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ $placeholder }}'" value='{{ old($name, $value) }}'>
-            @break
+            <div class="input-group mb-3 @error($name) is-invalid @enderror">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}'
+                    id='{{ $name }}' name='{{ $name }}' placeholder="{{ $placeholder }}"
+                    onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ $placeholder }}'"
+                    value='{{ old($name, $value) }}'>
+            </div>
+        @break
+
         @case('date')
-            <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}' name='{{ $name }}' value='{{ old($name, $value) }}'>
-            @break
+            <div class="input-group mb-3 @error($name) is-invalid @enderror">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class=""></i>Date</span>
+                </div>
+                <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}'
+                    id='{{ $name }}' name='{{ $name }}' value='{{ old($name, $value) }}'>
+            </div>
+        @break
+
         @case('number')
-            <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}' id='{{ $name }}' name='{{ $name }}' value='{{ old($name, $value) }}'>
-            @break
+            <div class="input-group mb-3 @error($name) is-invalid @enderror">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                </div>
+                <input class='form-control @error($name) is-invalid @enderror' type='{{ $type }}'
+                    id='{{ $name }}' name='{{ $name }}' value='{{ old($name, $value) }}'>
+            </div>
+        @break
+
         @case('textarea')
-            <textarea class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}" placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ $placeholder }}'">{{ old($name, $value) }}</textarea>
-            @break
+            <div class="input-group mb-3 @error($name) is-invalid @enderror">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-file-alt"></i></span>
+                </div>
+                <textarea class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}"
+                    placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''"
+                    onblur="this.placeholder = '{{ $placeholder }}'">{{ old($name, $value) }}</textarea>
+            </div>
+        @break
+
         @default
-            <input class="form-control @error($name) is-invalid @enderror" type="{{ $type }}" id="{{ $name }}" name="{{ $name }}" placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ $placeholder }}'" value="{{ old($name, $value) }}">
-            @break
+            <div class="input-group mb-3 @error($name) is-invalid @enderror">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="">Txt</i></span>
+                </div>
+                <input class="form-control @error($name) is-invalid @enderror" type="{{ $type }}"
+                    id="{{ $name }}" name="{{ $name }}" placeholder="{{ $placeholder }}"
+                    onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ $placeholder }}'"
+                    value="{{ old($name, $value) }}">
+            </div>
+        @break
     @endswitch
 
     @error($name)
@@ -76,4 +84,3 @@
         </div>
     @enderror
 </div>
-
