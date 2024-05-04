@@ -23,10 +23,16 @@ class MinistereRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'titre' => ['required', 'min:2'],
             'description_ministere' => ['required', 'min:8'],
-            'image_ministere' => ['required','image']
         ];
+
+        // Ajoutez les règles uniquement si c'est une création de service
+        if ($this->isMethod('post')) {
+            $rules['image_service'] = ['required', 'image'];
+        }
+
+        return $rules;
     }
 }

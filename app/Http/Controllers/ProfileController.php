@@ -64,6 +64,7 @@ class ProfileController extends Controller
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        // dd($request);
         $data = $request->validated();
         $imagePath = $request->user()->image_users; // Par défaut, conservez l'ancienne image
 

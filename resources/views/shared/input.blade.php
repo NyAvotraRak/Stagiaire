@@ -7,7 +7,7 @@
     $placeholder ??= '';
 @endphp
 
-<div class="form-group {{ $class }}">
+<div class="form-group">
     <label for="{{ $name }}">{{ $label }}</label>
 
     @switch($type)
@@ -16,7 +16,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-file"></i></span>
                 </div>
-                <input class="form-control @error($name) is-invalid @enderror" type="{{ $type }}" id="{{ $name }}"
+                <input class="form-control  {{ $class }} @error($name) is-invalid @enderror" type="{{ $type }}" id="{{ $name }}"
                     name="{{ $name }}" placeholder="{{ $placeholder }}" onfocus="this.placeholder = ''"
                     onblur="this.placeholder = '{{ $placeholder }}'" value="{{ old($name, $value) }}">
             </div>
@@ -68,7 +68,7 @@
         @default
             <div class="input-group mb-3 @error($name) is-invalid @enderror">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="">Txt</i></span>
+                    <span class="input-group-text"><i class="fas fa-asterisk"></i></span>
                 </div>
                 <input class="form-control @error($name) is-invalid @enderror" type="{{ $type }}"
                     id="{{ $name }}" name="{{ $name }}" placeholder="{{ $placeholder }}"

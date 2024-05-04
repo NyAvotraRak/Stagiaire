@@ -50,7 +50,8 @@
                                             <div class="position-relative p-3"
                                                 style="height: 180px; border-radius: 30px; background-color: rgb(240, 239, 239); box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);">
                                                 <div class="ribbon-wrapper ribbon-xl">
-                                                    <div class="ribbon text-xl" style=" background-color: rgb(207, 206, 206)">
+                                                    <div class="ribbon text-xl"
+                                                        style=" background-color: rgb(207, 206, 206)">
                                                         {{ $niveau->nom_niveau }}
                                                     </div>
                                                 </div><br><br><br>
@@ -58,21 +59,82 @@
                                                     <!-- Nouvelle colonne pour les icônes de refus et d'acceptation -->
                                                     <div class="form-group text-center mt-3">
                                                         <div class="d-flex justify-content-center align-items-center">
-                                                            <form action="{{ route('admin.niveau.destroy', $niveau) }}"
+                                                            <form id="delete-form"
+                                                                action="{{ route('admin.niveau.destroy', $niveau) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('delete')
-                                                                <button class="btn btn-reset mr-2">
-                                                                    <span class="mr-2"><i class="fas fa-trash-alt"
-                                                                            style="color: rgb(255, 14, 14);"></i>
-                                                                        Supprimé</span>
-                                                                </button>
                                                             </form>
+
+                                                            <button class="btn btn-reset mr-2"
+                                                                onclick="showConfirmationModal()">
+                                                                <span class="mr-2">
+                                                                    <i class="fas fa-trash-alt"
+                                                                        style="color: rgb(255, 14, 14);"></i>
+                                                                    Supprimé
+                                                                </span>
+                                                            </button>
                                                             <a href="{{ route('admin.niveau.edit', $niveau) }}"
                                                                 class="genric-btn info-border circle">
                                                                 <span><i class="fas fa-edit"
                                                                         style="color: rgb(106, 128, 252);"></i> Edité</span>
                                                             </a>
+                                                            <form id="delete-form"
+                                                                action="{{ route('admin.niveau.destroy', $niveau) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                            </form>
+
+                                                            <div id="confirmation-modal" class="modal">
+                                                                <div class="modal-content"
+                                                                    style="background-color:rgba(246, 252, 246, 0)">
+                                                                    <div class="row justify-content-center">
+                                                                        <!-- /.col -->
+                                                                        <div class="col-md-4">
+                                                                            <!-- Widget: user widget style 1 -->
+                                                                            <div class="card card-widget widget-user">
+                                                                                <!-- Add the bg color to the header using any of the bg-* classes -->
+                                                                                <div class="widget-user-header"
+                                                                                    style="background-color: rgb(255, 14, 14); color: white;">
+                                                                                    <h3 class="">Êtes-vous sûr de
+                                                                                        vouloir supprimer cet élément ?</h3>
+                                                                                </div>
+                                                                                <div class="card-footer">
+                                                                                    <div class="col-sm-12 mt-3 border-top">
+                                                                                        <!-- Nouvelle colonne pour les icônes de refus et d'acceptation -->
+                                                                                        <div
+                                                                                            class="form-group text-center mt-3">
+                                                                                            <div>
+                                                                                                <button
+                                                                                                    class="btn btn-reser"
+                                                                                                    onclick="deleteItem()">
+                                                                                                    <span class="mr-5"><i
+                                                                                                            class="fas fa-check-circle"
+                                                                                                            style="color: rgb(255, 14, 14);">
+                                                                                                            Oui,
+                                                                                                            Suprimé</i></span></button>
+                                                                                                <button
+                                                                                                    class="btn btn-reser"
+                                                                                                    onclick="hideConfirmationModal()">
+                                                                                                    <span><i class="fas fa-times-circle"
+                                                                                                            style="color: rgb(0, 160, 5);">
+                                                                                                            Annulé
+                                                                                                        </i></span></button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <!-- /.row -->
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <!-- /.widget-user -->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -100,3 +162,16 @@
     </div>
     <!-- /.content-wrapper -->
 @endsection
+<script>
+    function showConfirmationModal() {
+        document.getElementById('confirmation-modal').style.display = 'block';
+    }
+
+    function hideConfirmationModal() {
+        document.getElementById('confirmation-modal').style.display = 'none';
+    }
+
+    function deleteItem() {
+        document.getElementById('delete-form').submit();
+    }
+</script>

@@ -31,18 +31,19 @@
                             <!-- form start -->
                             <form class="vstack gap-5"
                                 action="{{ route($service->exists ? 'admin.service.update' : 'admin.service.store', $service) }}"
-                                method="post">
+                                method="post" enctype="multipart/form-data">
                                 @csrf
 
                                 @method($service->exists ? 'put' : 'post')
                                 <div class="card-body">
-                                    @include('shared.input', [
-                                        'type' => 'file',
-                                        'name' => 'image_service',
-                                        'label' => 'Logo :',
-                                        'placeholder' => '...',
-                                        'value' => old('image_service', $service->image_service),
-                                    ])
+                                    <label for="image_service">Logo :</label>
+                                    <input id="image_service" name="image_service" type="file" class="form-control"
+                                        accept="image/*">
+                                    @if ($service->image_url())
+                                        <img src="{{ $service->image_url() }}" alt="Image actuelle" class="mt-2"
+                                            style="max-width: 200px;">
+                                    @endif
+
                                     @include('shared.input', [
                                         'name' => 'nom_service',
                                         'label' => 'Service :',

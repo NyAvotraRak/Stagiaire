@@ -26,7 +26,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Prénom" name="prenom_demande"
+                                    <input type="text" class="form-control" placeholder="Prénom" name="prenom_stagiaire"
                                         value="{{ old('prenom_stagiaire', $input['prenom_stagiaire'] ?? '') }}">
                                 </div>
                             </div>
@@ -37,8 +37,8 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class=""></i>Début</span>
                                     </div>
-                                    <input type="date" class="form-control" placeholder="date de debut"
-                                        name="date_debut" value="{{ old('date_debut', $input['date_debut'] ?? '') }}">
+                                    <input type="date" class="form-control" placeholder="date de debut" name="date_debut"
+                                        value="{{ old('date_debut', $input['date_debut'] ?? '') }}">
                                 </div>
                             </div>
                         </div>
@@ -65,7 +65,6 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-
                 <div class="row justify-content-center">
                     @forelse ($stagiaires as $stagiaire)
                         <div class="col-md-4">
@@ -96,7 +95,7 @@
                                                             <span><i class="fas fa-copy" style="color: rgb(255, 14, 14);">
                                                                     Duplicata </i></span></a>
                                                     @else
-                                                    <div><br></div>
+                                                        <div><br></div>
                                                     @endif
                                                     {{-- <div>
                                                         <span><i class="fas fa-certificate"

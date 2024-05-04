@@ -2,76 +2,113 @@
 <html lang="en">
 
 <head>
-    <!-- Required Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Page Title -->
     <title>@yield('title') | Ministere de l'Interieur</title>
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('images/logo/favicon.png') }}" type="image/x-icon">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet"
+        href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="{{ asset('plugins/jqvmap/jqvmap.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+    <!-- styleko -->
+    <link rel="stylesheet" href="{{ asset('dist/css/theme.css') }}">
+    <!-- styleko -->
+    <link rel="stylesheet" href="{{ asset('dist/css/styleko.css') }}">
+    <style>
+        /* Ajoutez une classe CSS pour la barre de navigation fixe */
+        .navbar-fixed {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            /* z-index: 1000; */
+            /* Assure que la barre de navigation apparaît au-dessus des autres éléments */
+        }
+    </style>
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="{{ asset('css/animate-3.7.0.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/font-awesome-4.7.0.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-4.1.3.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/owl-carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/linearicons.css') }}">
-    <link rel="stylesheet" href="{{asset('css/nice-select.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    {{-- <link rel="stylesheet" href="assets/css/styleko.css{{asset('')}}"> --}}
 </head>
 
-<body>
-    <!-- Preloader Starts -->
-    <div class="preloader">
-        <div class="spinner"></div>
-    </div>
-    <!-- Preloader End -->
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        @php
+            $route = request()->route()->getName();
+        @endphp
 
-    <!-- Header Area Starts -->
-    <header class="header-area">
-        <div id="header" id="home">
-            <div class="container">
-                <div class="row align-items-center justify-content-between d-flex">
-                    <div id="logo">
-                        <a href="index.html"><img src="{{asset('images/logo/logo.png')}}" alt="" title="" /></a>
-                    </div>
-                    <nav id="nav-menu-container">
-                        <ul class="nav-menu">
-                            <li class="menu-active"><a href="index.html">Home</a></li>
-                        </ul>
-                    </nav><!-- #nav-menu-container -->
-                </div>
+        <!-- Navbar -->
+        <nav class="navbar-white text-center">
+            <div class="mx-auto">
+                <a href="{{route('acceuil.index')}}">
+
+                    <h2 class="brand"><strong>
+                            <!-- Brand Logo -->
+                            <img src="{{ asset('dist/img/iconMID.png') }}" alt="" class="brand-image img-circle"
+                                style="width: 70px; height: 70px; object-fit: cover;"> Ministère de l'Intérieur
+                        </strong>
+                    </h2>
+                </a>
             </div>
-        </div>
-    </header>
-    <!-- Header Area End -->
+        </nav>
 
-    @if (@session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+        @yield('content')
+    </div>
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
 
-    @yield('content')
-
-
-    <!-- Javascript -->
-    <script src="{{ asset('js/vendor/jquery-2.2.4.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/bootstrap-4.1.3.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/wow.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/owl-carousel.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/jquery.datetimepicker.full.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/jquery.nice-select.min.js') }}"></script>
-    <script src="{{ asset('js/vendor/superfish.min.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+    <!-- jQuery -->
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- ChartJS -->
+    <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
+    <!-- Sparkline -->
+    <script src="{{ asset('plugins/sparklines/sparkline.js') }}"></script>
+    <!-- JQVMap -->
+    <script src="{{ asset('plugins/jqvmap/jquery.vmap.min.js') }}"></script>
+    <script src="{{ asset('plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="{{ asset('plugins/jquery-knob/jquery.knob.min.js') }}"></script>
+    <!-- daterangepicker -->
+    <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <!-- Summernote -->
+    <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
+    <!-- overlayScrollbars -->
+    <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{{ asset('dist/js/demo.js') }}"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
 
 </body>
-
-</html>
 
 </html>

@@ -13,6 +13,7 @@ class Fonction extends Model
         'nom_fonction',
         'role'
     ];
+    public $timestamps = true;
 
     public function users()
     {

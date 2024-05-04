@@ -67,6 +67,7 @@ class FonctionController extends Controller
      */
     public function update(FonctionRequest $request, Fonction $fonction)
     {
+        // dd($fonction);
         $fonction->update($request->validated());
         return to_route('admin.fonction.index')->with('success', 'Le fonction a bien été modifié');
     }

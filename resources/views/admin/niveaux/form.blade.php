@@ -30,7 +30,7 @@
                             <!-- /.card-header -->
                             <!-- form start -->
                             <form class="vstack gap-5"
-                                action="{{ route($niveau->exists ? 'admin.niveau.update' : 'admin.niveau.store', $niveau) }}"
+                                action="{{ $niveau->exists ? route('admin.niveau.update', $niveau) : route('admin.niveau.store') }}"
                                 method="post" enctype="multipart/form-data">
                                 @csrf
 

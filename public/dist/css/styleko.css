@@ -11,8 +11,15 @@
     /* Autres réinitialisations de styles selon les besoins */
 }
 a {
-    text-decoration: none; /* Supprime le soulignement par défaut */
-    color: inherit; /* Utilise la couleur du texte héritée */
-    cursor: pointer; /* Change le curseur en pointeur par défaut */
+    text-decoration: none!important; /* Supprime le soulignement par défaut */
+    color: inherit!important; /* Utilise la couleur du texte héritée */
+    cursor: pointer!important; /* Change le curseur en pointeur par défaut */
 }
+#confirmation-modal {
+    backdrop-filter: blur(2px); /* Ajoute un flou de 10px aux éléments sous la modal */
+}
+.custom-shadow {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Définissez votre style d'ombre personnalisé */
+}
+
 

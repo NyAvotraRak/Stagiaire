@@ -50,9 +50,11 @@
                                     'value' => old('description_theme', $stagiaire->description_theme),
                                 ])
                             </div>
-                            <div class="text-center"> <!-- Ajout de la classe "text-center" pour centrer le bouton -->
-                                <button type="submit" class="genric-btn info-border circle margin-top-5">Valider</button>
-                                <!-- Modification de l'élément "a" en "button" -->
+                            <div class="text-center">
+                                <button type="submit" class="genric-btn info-border circle margin-top-5">
+                                    <i class="fas fa-paper-plane"></i> <!-- Icône d'envoi -->
+                                    Envoyer
+                                </button>
                             </div>
                         </form>
                     </div>

@@ -84,9 +84,27 @@ class ServiceController extends Controller
      */
     public function update(ServiceRequest $request, Service $service)
     {
-        $service->update($this->extract_data($service, $request));
-        return to_route('admin.service.index')->with('success', 'Le service a bien été modifié');
+        // Récupérer les données validées depuis la requête
+        $data = $this->extract_data($service, $request);
+
+        // Vérifier si un nouveau fichier d'image a été téléchargé
+        if ($request->hasFile('image_service')) {
+            // Supprimer l'ancienne image si elle existe
+            if ($service->image_service) {
+                Storage::disk('public')->delete($service->image_service);
+            }
+            // Enregistrer le nouveau fichier d'image et mettre à jour le chemin dans les données
+            $data['image_service'] = $request->file('image_service')->store('file', 'public');
+        }
+
+        // Mettre à jour les données du service avec les nouvelles données
+        $service->update($data);
+
+        // Redirection avec un message de succès
+        return redirect()->route('admin.service.index')->with('success', 'Le service a bien été modifié');
     }
+
+
 
     // private function extract_data(Service $service, ServiceRequest $request)
     // {
@@ -117,17 +135,24 @@ class ServiceController extends Controller
     // }
     private function extract_data(Service $service, ServiceRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->validated(); // Récupérer toutes les données validées
+
+        // Récupérer le fichier d'image de la requête
         $image_service = $request->file('image_service');
-        if ($image_service == null || $image_service->getError()) {
-            return $data;
+
+        // Vérifier si un nouveau fichier d'image a été téléchargé
+        if ($image_service) {
+            // Supprimer l'ancienne image si elle existe
+            if ($service->image_service) {
+                Storage::disk('public')->delete($service->image_service);
+            }
+            // Enregistrer le nouveau fichier d'image et mettre à jour le chemin dans les données
+            $data['image_service'] = $image_service->store('file', 'public');
         }
-        if ($service->image_service) {
-            Storage::disk('public')->delete($service->image_service);
-        }
-        $data['image_service'] = $image_service->store('file', 'public');
-        return $data;
+
+        return $data; // Retourner les données mises à jour
     }
+
 
     /**
      * Remove the specified resource from storage.

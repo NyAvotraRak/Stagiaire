@@ -70,13 +70,16 @@
                                     <div class="card-footer">
                                         <div class="row justify-content-end">
                                             <div class="">
-                                                <form action="{{ route('admin.users.destroy', $user) }}" method="post">
+                                                <form id="delete-form-{{ $user->id }}"
+                                                    action="{{ route('admin.users.destroy', $user) }}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="btn btn-reset">
-                                                        <span class="mr-5"><i class="fas fa-trash-alt"
-                                                                style="color: rgb(255, 14, 14);">Supprimé</i></span></button>
                                                 </form>
+                                                <button class="btn btn-reset"
+                                                    onclick="showConfirmationModal('{{ $user->id }}')">
+                                                    <span class="mr-5"><i class="fas fa-trash-alt"
+                                                            style="color: rgb(255, 14, 14);">Supprimé</i></span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -91,6 +94,62 @@
 
         </section>
         <!-- /.content -->
+
+        <!-- Modal de confirmation de suppression -->
+        <div id="confirmation-modal" class="modal">
+            <div class="modal-content" style="background-color:rgba(246, 252, 246, 0)">
+                <div class="row justify-content-center">
+                    <!-- /.col -->
+                    <div class="col-md-4">
+                        <!-- Widget: user widget style 1 -->
+                        <div class="card card-widget widget-user">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header" style="background-color: rgb(255, 14, 14); color: white;">
+                                <h3 class="">Êtes-vous sûr de vouloir supprimer cet utilisateur ?</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-12 mt-3 border-top">
+                                    <!-- Nouvelle colonne pour les icônes de refus et d'acceptation -->
+                                    <div class="form-group text-center mt-3">
+                                        <div>
+                                            <button class="btn btn-reser" onclick="deleteItem('{{ $user->id }}')">
+                                                <span class="mr-5"><i class="fas fa-check-circle"
+                                                        style="color: rgb(255, 14, 14);">Oui, Supprimé</i></span>
+                                            </button>
+
+                                            <button class="btn btn-reser" onclick="hideConfirmationModal()">
+                                                <span><i class="fas fa-times-circle"
+                                                        style="color: rgb(0, 160, 5);">Annulé</i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.widget-user -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- JavaScript pour la confirmation de suppression -->
+        <script>
+            function showConfirmationModal(userId) {
+                document.getElementById('confirmation-modal').style.display = 'block';
+                // Mettre à jour l'action du formulaire de suppression avec l'ID de l'utilisateur
+                document.getElementById('delete-form-' + userId).action = "{{ route('admin.users.destroy', '') }}" + "/" +
+                    userId;
+            }
+
+            function hideConfirmationModal() {
+                document.getElementById('confirmation-modal').style.display = 'none';
+            }
+
+            function deleteItem(userId) {
+                document.getElementById('delete-form-' + userId).submit();
+            }
+        </script>
     </div>
     <!-- /.content-wrapper -->
 @endsection

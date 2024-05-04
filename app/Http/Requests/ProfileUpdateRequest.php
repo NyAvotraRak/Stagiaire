@@ -17,7 +17,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         // dd('er');
         return [
-            'image_users' => ['required', 'image', 'max:2000'],
+            'image_users' => ['image', 'max:2000'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'fonction_id' => ['required', 'exists:fonctions,id'],

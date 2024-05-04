@@ -14,8 +14,7 @@ class DemandeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */
-    public function index(SearchDemandeRequest $request)
+     */ public function index(SearchDemandeRequest $request)
     {
         // Commencez par une requête Eloquent vide
         $query = Demande::select('demandes.*', 'services.nom_service', 'etats.nom_etat', 'niveaux.nom_niveau')
@@ -23,7 +22,7 @@ class DemandeController extends Controller
             ->join('etats', 'demandes.etat_id', '=', 'etats.id')
             ->join('niveaux', 'demandes.niveau_id', '=', 'niveaux.id')
             ->whereIn('etats.nom_etat', ['En attente', 'Entretien'])
-            ->orderBy('demandes.created_at', 'desc');
+            ->orderBy('etats.id', 'desc');
 
         // Vérifiez si le nom_demande est présent dans les données validées
         if ($nom_demande = $request->validated()['nom_demande'] ?? null) {
@@ -38,12 +37,31 @@ class DemandeController extends Controller
         // Exécutez la requête et récupérez les résultats
         $demandes = $query->get();
 
-        return view('admin.demandes.index', compact('demandes'));
+        // Compter le nombre total de demandes
+        $nombre_demandes = $demandes->count();
+
+        // Initialiser les nombres d'état à zéro
+        $nombre_etat_id_1 = 0;
+        $nombre_etat_id_2 = 0;
+        // Initialiser les pourcentages à zéro
+        $pourcentage_etat_id_1 = 0;
+        $pourcentage_etat_id_2 = 0;
+
+        // Vérifier si le nombre total de demandes est différent de zéro avant de calculer les pourcentages
+        if ($nombre_demandes > 0) {
+            // Compter le nombre de demandes avec etat_id égal à 1
+            $nombre_etat_id_1 = $demandes->where('etat_id', 1)->count();
+            // Compter le nombre de demandes avec etat_id égal à 2
+            $nombre_etat_id_2 = $demandes->where('etat_id', 2)->count();
+            // Calcul du pourcentage de demandes avec etat_id égal à 1 par rapport au nombre total de demandes
+            $pourcentage_etat_id_1 = ($nombre_etat_id_1 / $nombre_demandes) * 100;
+            // Calcul du pourcentage de demandes avec etat_id égal à 2 par rapport au nombre total de demandes
+            $pourcentage_etat_id_2 = ($nombre_etat_id_2 / $nombre_demandes) * 100;
+        }
+
+        // Passer les nombres de demandes à la vue
+        return view('admin.demandes.index', compact('demandes', 'nombre_demandes', 'nombre_etat_id_1', 'nombre_etat_id_2', 'pourcentage_etat_id_1', 'pourcentage_etat_id_2'));
     }
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

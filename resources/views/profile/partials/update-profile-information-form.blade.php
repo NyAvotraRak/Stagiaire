@@ -26,7 +26,7 @@
         <div>
             <x-input-label for="image_users" :value="__('Image de profil')" />
             <input id="image_users" name="image_users" type="file" class="mt-1 block w-full" accept="image/*"
-                value="{{ old('image_users', $user->image_users) }}" />
+                value="{{ old('image_users', $user->image_url()) }}" />
             <x-input-error :messages="$errors->updateProfile->get('image_users')" class="mt-2" />
         </div>
 

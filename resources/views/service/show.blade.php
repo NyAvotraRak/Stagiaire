@@ -3,98 +3,120 @@
 @section('title', $service->nom_service)
 
 @section('content')
-    <!--================Blog Area =================-->
-    <section class="blog_area section-padding">
-        <div class="container">
-            <div class="row justify-content-center">
-                <!-- Ajout de la classe "justify-content-center" pour centrer horizontalement -->
-                <div class="col-lg-8 posts-list">
-                    <div class="comment-form">
-                        <h1>{{ $service->nom_service }}</h1>
-                        <h2>{{ $service->description_service }}</h2>
+    <div class="container">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Intéressé par ce service? :</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                        <h4 class="text-center">Intéressé par ce service :</h4>
-                        <!-- Ajout de la classe "text-center" pour centrer le titre -->
-                        <form action="{{ route('acceuil.postule', $demande) }}" method="post" class="vstack gap-3" enctype="multipart/form-data">
+        <section class="content">
+            <div class="card card-solid">
+                <div class="card-body" style="background-color: rgb(240, 240, 240)">
+                    <div class="row">
+                        <!-- Nom du service -->
+                        <div class="row">
+                            <div class="col-lg-12 text-center"> <!-- Ajoutez la classe text-center -->
+                                {{-- <div class="row"> --}}
+                                <h3 class="my-3">
+                                    {{ $service->nom_service }}
+                                </h3>
+                                {{-- </div> --}}
+                            </div>
+                            <p>{{ $service->description_service }}</p>
+                        </div>
+
+                        <!-- Image du service -->
+                        <div class="col-lg-4 mt-4">
+                            @if ($service->image_service)
+                                <img src="{{ $service->image_url() }}" class="img-circle elevation-2"
+                                    style="width: 300px; height: 300px; object-fit:cover;" alt="Product Image">
+                            @endif
+                        </div>
+                        <!-- Formulaire de demande -->
+                        <form class="vstack gap-2" action="{{ route('acceuil.postule', $demande) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
-                            <div class="form-group form-inline">
-                                <div class="form-group col-lg-6 col-md-6">
+                            <div class="row">
+                                <div class="col-lg-6">
                                     @include('shared.input', [
                                         'type' => 'file',
                                         'name' => 'image_demande',
                                         'label' => 'Image :',
-                                        'placeholder' => 'Choisir un fichier',
-                                        'value' => old('image_demande', $demande->image_demande),
+                                        'placeholder' => 'Image',
+                                        'value' => old('image_demande'),
                                     ])
                                     @include('shared.input', [
                                         'name' => 'nom_demande',
                                         'label' => 'Nom :',
-                                        'placeholder' => 'Entrer le nom',
+                                        'placeholder' => 'Nom',
                                         'value' => old('nom_demande', $demande->nom_demande),
                                     ])
                                     @include('shared.input', [
                                         'name' => 'prenom_demande',
                                         'label' => 'Prénom :',
-                                        'placeholder' => 'Entrer le prénom',
+                                        'placeholder' => 'Prénom',
                                         'value' => old('prenom_demande', $demande->prenom_demande),
                                     ])
+                                    @include('shared.select', [
+                                        'name' => 'niveau_id',
+                                        'label' => 'Niveau :',
+                                        'options' => $niveaux,
+                                        'value' => old('niveau_id', $demande->niveau_id),
+                                    ])
                                 </div>
-                                <div class="form-group col-lg-6 col-md-6">
+                                <div class="col-lg-6">
+                                    @include('shared.input', [
+                                        'type' => 'email',
+                                        'name' => 'email_demande',
+                                        'label' => 'E-mail :',
+                                        'placeholder' => 'exemple@gmail.com',
+                                        'value' => old('email_demande', $demande->email_demande),
+                                    ])
                                     @include('shared.input', [
                                         'type' => 'file',
                                         'name' => 'cv',
-                                        'label' => 'CV :',
-                                        'placeholder' => 'CV',
+                                        'label' => 'Curriculum Vitae :',
+                                        'placeholder' => 'cv',
                                         'value' => old('cv', $demande->cv),
                                     ])
                                     @include('shared.input', [
                                         'type' => 'file',
                                         'name' => 'lm',
-                                        'label' => 'LM :',
-                                        'placeholder' => '...',
+                                        'label' => 'Lettre de Motivation :',
+                                        'placeholder' => 'lm',
                                         'value' => old('lm', $demande->lm),
                                     ])
                                     @include('shared.input', [
                                         'type' => 'file',
                                         'name' => 'autres',
                                         'label' => 'Autres :',
-                                        'placeholder' => '....',
+                                        'placeholder' => 'autres',
                                         'value' => old('autres', $demande->autres),
                                     ])
                                 </div>
                             </div>
-                            <div class="form-group">
-                                @include('shared.input', [
-                                    'type' => 'email',
-                                    'name' => 'email_demande',
-                                    'label' => 'Email :',
-                                    'placeholder' => 'exemple@gmail.com',
-                                    'value' => old('email_demande', $demande->email_demande),
-                                ])
+                            <div class="text-center">
+                                <button class="btn btn-reset">
+                                    <span><i class="fas fa-paper-plane" style="color: rgb(106, 128, 252);">
+                                            Envoyer</i></span>
+                                </button>
                             </div>
-                            <div class="form-group">
-                                @include('shared.select', [
-                                    'name' => 'niveau_id',
-                                    'label' => 'Niveau',
-                                    'value' => old('niveau_id', $demande->niveau_id),
-                                    'options' => $niveaux,
-                                ])
-                            </div>
-                            <input type="hidden" name="etat_id" id="etat_id" value="1">
+
                             <input type="hidden" name="service_id" id="service_id" value="{{ $service->id }}">
-                            <div class="col-lg-12">
-                                <div class="section-top text-right text-center"> <!-- Ajout de la classe text-center -->
-                                    <button type="submit"
-                                        class="genric-btn info-border circle margin-top-5">Ajouter</button>
-                                    <!-- Ajout de la classe margin-top-5 -->
-                                </div>
-                            </div>
+                            <input type="hidden" name="etat_id" id="etat_id" value="1">
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!--================Blog Area =================-->
+        </section>
+    </div>
 @endsection

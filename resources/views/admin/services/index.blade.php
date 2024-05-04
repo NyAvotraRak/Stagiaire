@@ -7,13 +7,11 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            {{-- <div class="container-fluid"> --}}
             <div class="row-12 d-flex justify-content-start mb-3 ml-3">
                 <div class="section-top text-right">
                     <a href="{{ route('admin.service.create') }}">
-                        <span><i class="fas fa-plus-circle" style="color: rgb(106, 128, 252);">
-                                Nouveau</i>
-                        </span></a>
+                        <span><i class="fas fa-plus-circle" style="color: rgb(106, 128, 252);"> Nouveau</i></span>
+                    </a>
                 </div>
             </div>
             <div class="col-12">
@@ -80,54 +78,92 @@
                                                 <h5 class="description-header">Desciption : </h5>
                                                 <p class="text-justify">{{ $service->description_service }}</p>
                                             </div>
-                                            <!-- /.col -->
-                                            <!-- Add the bg color to the header using any of the bg-* classes -->
                                         </div>
-                                        <!-- /.row -->
                                     </div>
-                                </div>
-                                <div class="col-sm-12 mt-3 border-top">
-                                    <!-- Nouvelle colonne pour les icônes de refus et d'acceptation -->
-                                    <div
-                                        class="form-group text-center mt-3 d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <a href="{{ route('admin.service.edit', $service) }}"
-                                                class="genric-btn info-border circle">
-                                                <span><i class="fas fa-edit" style="color: rgb(106, 128, 252);">
-                                                        Edité</i>
-                                                </span>
-                                            </a>
-                                        </div>
-                                        <div class=""> <!-- Ajout de la classe mx-3 pour l'espace horizontal -->
-                                            <form action="{{ route('admin.service.destroy', $service) }}" method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <button class="btn btn-reset">
+                                    <div class="col-sm-12 mt-3 border-top">
+                                        <!-- Nouvelle colonne pour les icônes de refus et d'acceptation -->
+                                        <div
+                                            class="form-group text-center mt-3 d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <a href="{{ route('admin.service.edit', $service) }}"
+                                                    class="genric-btn info-border circle">
+                                                    <span><i class="fas fa-edit" style="color: rgb(106, 128, 252);">
+                                                            Edité</i></span>
+                                                </a>
+                                            </div>
+                                            <div class="">
+                                                <button class="btn btn-reset mr-2" onclick="showConfirmationModalService()">
                                                     <span class="mr-2"><i class="fas fa-trash-alt"
                                                             style="color: rgb(255, 14, 14);"> Supprimé</i></span>
                                                 </button>
-                                            </form>
+                                                <form id="delete-form-service"
+                                                    action="{{ route('admin.service.destroy', $service) }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.widget-user -->
                         </div>
-                        <!-- /.col -->
                     @empty
                         <div class="row-12">
                             Eo Mafana ah....
                         </div>
                     @endforelse
                 </div>
-                <!-- /.row -->
-            </div><!-- /.container-fluid -->
+            </div>
         </section>
-        <!-- /.content -->
 
-        <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
-            <i class="fas fa-chevron-up"></i>
-        </a>
+        <!-- Modal de confirmation -->
+        <div id="confirmation-modal-service" class="modal">
+            <div class="modal-content" style="background-color:rgba(246, 252, 246, 0)">
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <div class="card card-widget widget-user">
+                            <div class="widget-user-header" style="background-color: rgb(255, 14, 14); color: white;">
+                                <h3 class="">Êtes-vous sûr de vouloir supprimer cet élément ?</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-12 mt-3 border-top">
+                                    <div class="form-group text-center mt-3">
+                                        <div>
+                                            <button class="btn btn-reser" onclick="deleteItemService()">
+                                                <span class="mr-5"><i class="fas fa-check-circle"
+                                                        style="color: rgb(255, 14, 14);"> Oui, Supprimé</i></span>
+                                            </button>
+                                            <button class="btn btn-reser" onclick="hideConfirmationModalService()">
+                                                <span><i class="fas fa-times-circle" style="color: rgb(0, 160, 5);">
+                                                        Annulé</i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
+
+        <!-- JavaScript pour la confirmation de suppression -->
+        <script>
+            function showConfirmationModalService() {
+                document.getElementById('confirmation-modal-service').style.display = 'block';
+            }
+
+            function hideConfirmationModalService() {
+                document.getElementById('confirmation-modal-service').style.display = 'none';
+            }
+
+            function deleteItemService() {
+                document.getElementById('delete-form-service').submit();
+            }
+        </script>
+
+        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 @endsection

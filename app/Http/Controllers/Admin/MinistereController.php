@@ -56,9 +56,26 @@ class MinistereController extends Controller
      */
     public function update(MinistereRequest $request, Ministere $ministere)
     {
-        $ministere->update($this->extract_data($ministere, $request));
-        return to_route('admin.ministere.index')->with('success', 'Le ministere a bien été modifié');
+        // Récupérer les données validées depuis la requête
+        $data = $this->extract_data($ministere, $request);
+
+        // Vérifier si un nouveau fichier d'image a été téléchargé
+        if ($request->hasFile('image_ministere')) {
+            // Supprimer l'ancienne image si elle existe
+            if ($ministere->image_ministere) {
+                Storage::disk('public')->delete($ministere->image_ministere);
+            }
+            // Enregistrer le nouveau fichier d'image et mettre à jour le chemin dans les données
+            $data['image_ministere'] = $request->file('image_ministere')->store('file', 'public');
+        }
+
+        // Mettre à jour les données du ministère avec les nouvelles données
+        $ministere->update($data);
+
+        // Redirection avec un message de succès
+        return redirect()->route('admin.ministere.index')->with('success', 'Le ministère a bien été modifié');
     }
+
 
     private function extract_data(Ministere $ministere, MinistereRequest $request)
     {
@@ -68,7 +85,7 @@ class MinistereController extends Controller
         if ($image_ministere == null || $image_ministere->getError()) {
             return $data;
         }
-        if($ministere->image_ministere){
+        if ($ministere->image_ministere) {
             Storage::disk('public')->delete($ministere->image_ministere);
         }
         $data['image_ministere'] = $image_ministere->store('file', 'public');

@@ -23,7 +23,7 @@ class AcceuilController extends Controller
         $demande = new Demande();
         $expectedSlug = $service->getSlug();
         if ($slug != $expectedSlug) {
-            return to_route('service.show', [
+            return to_route('acceuil.show', [
                 'slug' => $expectedSlug,
                 'service' => $service
             ]);
@@ -124,6 +124,7 @@ class AcceuilController extends Controller
     // }
     public function postule(DemandeRequest $request)
     {
+        // dd('re');
         // Créer une nouvelle demande en utilisant les données validées du formulaire
         $demande = Demande::create($this->extract_data($request));
         // $pdfMimeType = $request->file('cv')->getClientMimeType();

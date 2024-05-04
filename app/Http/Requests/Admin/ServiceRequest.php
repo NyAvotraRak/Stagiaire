@@ -23,10 +23,16 @@ class ServiceRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'nom_service' => ['required', 'min:2'],
             'description_service' => ['required', 'min:8'],
-            'image_service' => ['required','image']
         ];
+
+        // Ajoutez les règles uniquement si c'est une création de service
+        if ($this->isMethod('post')) {
+            $rules['image_service'] = ['required', 'image'];
+        }
+
+        return $rules;
     }
 }

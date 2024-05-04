@@ -23,12 +23,14 @@ class FonctionRequest extends FormRequest
      */
     public function rules(): array
     {
+        $fonctionId = $this->route('fonction')->id; // Récupérer l'ID de la fonction depuis la route
+
         return [
-            'nom_fonction' => ['required', 'min:2', Rule::unique(Fonction::class)],
+            'nom_fonction' => ['required', 'min:2', Rule::unique(Fonction::class)->ignore($fonctionId)],
             'role' => [
                 'required',
                 'min:2',
-                Rule::unique(Fonction::class)->where(function ($query) {
+                Rule::unique(Fonction::class)->ignore($fonctionId)->where(function ($query) {
                     return $query->where('role', 'Administrateur');
                 })
             ]

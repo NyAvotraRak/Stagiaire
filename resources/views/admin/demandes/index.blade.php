@@ -8,6 +8,57 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             {{-- <div class="container-fluid"> --}}
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Nombre total de la demande : {{ $nombre_demandes }}</h5>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mx-auto">
+
+                                            <div class="progress-group">
+                                                En Attente
+                                                <span
+                                                    class="float-right"><b>{{ $nombre_etat_id_1 }}</b>/{{ $nombre_demandes }}</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-primary"
+                                                        style="width: {{ $pourcentage_etat_id_1 }}%"></div>
+                                                </div>
+                                            </div>
+                                            <!-- /.progress-group -->
+                                            <!-- /.progress-group -->
+                                            <div class="progress-group">
+                                                <span class="progress-text">Entretien</span>
+                                                <span
+                                                    class="float-right"><b>{{ $nombre_etat_id_2 }}</b>/{{ $nombre_demandes }}</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-success" style="width: {{ $pourcentage_etat_id_2 }}%"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- /.progress-group -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+
+                                <!-- ./card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div><!--/. container-fluid -->
+            </section>
+            <!-- /.content -->
             <div class="col-12">
                 <div class="">
                     <form action="" method="get" class="d-flex gap-2">
@@ -45,7 +96,6 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <h3 class="mt-4 mb-4">Listes des demandes</h3>
                 <div class="row justify-content-center">
                     <!-- /.col -->
                     @forelse ($demandes as $demande)
@@ -196,7 +246,16 @@
                             <!-- /.widget-user -->
                         </div>
                     @empty
-                        <div>bonjour</div>
+                        <div class="col-12 d-flex justify-content-center">
+                            <div class="row">
+                                <img src="{{ asset('dist/img/iconMID.png') }}"
+                                    style="height: 150px; width: 150px; object-fit: cover;" class="product-image"
+                                    alt="Product Image">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p>Vide</p>
+                        </div>
                     @endforelse
                 </div>
                 <!-- /.row -->

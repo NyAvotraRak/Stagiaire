@@ -36,13 +36,20 @@
 
                                 @method($ministere->exists ? 'put' : 'post')
                                 <div class="card-body">
-                                    @include('shared.input', [
+                                    {{-- @include('shared.input', [
                                         'type' => 'file',
                                         'name' => 'image_ministere',
                                         'label' => 'Image :',
                                         'placeholder' => 'image',
-                                        'value' => old('image_ministere', $ministere->image_ministere),
-                                    ])
+                                        'value' => old('image_ministere', $ministere->image_url()),
+                                    ]) --}}
+                                    <label for="image_ministere">Logo :</label>
+                                    <input id="image_ministere" name="image_ministere" type="file" class="form-control"
+                                        accept="image/*">
+                                    @if ($ministere->image_url())
+                                        <img src="{{ $ministere->image_url() }}" alt="Image actuelle" class="mt-2"
+                                            style="max-width: 200px;">
+                                    @endif
                                     @include('shared.input', [
                                         'name' => 'titre',
                                         'label' => 'Nom :',
@@ -64,9 +71,11 @@
                                         <!-- Ajout de la classe "text-center" pour centrer le bouton -->
                                         <button type="submit" class="btn btn-reset">
                                             @if ($ministere->exists)
-                                                <span><i class="fas fa-check-circle" style="color: rgb(106, 128, 252);"> Modifié</i></span>
+                                                <span><i class="fas fa-check-circle" style="color: rgb(106, 128, 252);">
+                                                        Modifié</i></span>
                                             @else
-                                                <span><i class="fas fa-check-circle" style="color: rgb(106, 128, 252);"> Créé</i></span>
+                                                <span><i class="fas fa-check-circle" style="color: rgb(106, 128, 252);">
+                                                        Créé</i></span>
                                             @endif
                                         </button>
                                     </div>

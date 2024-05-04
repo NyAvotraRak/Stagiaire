@@ -23,8 +23,9 @@ class NiveauRequest extends FormRequest
      */
     public function rules(): array
     {
+        $niveauId = $this->route('niveau') ? $this->route('niveau')->id : null; // Vérifie si $niveau est défini
         return [
-            'nom_niveau' => ['required', 'min:2', Rule::unique(Niveau::class)],
+            'nom_niveau' => ['required', 'min:2', Rule::unique(Niveau::class)->ignore($niveauId)],
         ];
     }
 }

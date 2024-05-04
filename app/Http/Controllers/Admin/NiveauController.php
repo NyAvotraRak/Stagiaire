@@ -62,9 +62,18 @@ class NiveauController extends Controller
      */
     public function update(NiveauRequest $request, Niveau $niveau)
     {
+        // Vérifier si le niveau existe
+        if (!$niveau) {
+            return back()->with('error', 'Niveau non trouvé');
+        }
+
+        // Mettre à jour le niveau
         $niveau->update($request->validated());
-        return to_route('admin.niveau.index')->with('success', 'Le niveau a bien été modifié');
+
+        // Redirection avec un message de succès
+        return redirect()->route('admin.niveau.index')->with('success', 'Le niveau a bien été modifié');
     }
+
 
     /**
      * Remove the specified resource from storage.
