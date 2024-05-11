@@ -11,9 +11,15 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Nom')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-input-label for="nom_user" :value="__('Nom')" />
+            <x-text-input id="nom_user" class="block mt-1 w-full" type="text" name="nom_user" :value="old('nom_user')" required autofocus autocomplete="nom_user" />
+            <x-input-error :messages="$errors->get('nom_user')" class="mt-2" />
+        </div>
+        <!-- Name -->
+        <div>
+            <x-input-label for="prenom_user" :value="__('Prenom')" />
+            <x-text-input id="prenom_user" class="block mt-1 w-full" type="text" name="prenom_user" :value="old('prenom_user')" required autofocus autocomplete="prenom_user" />
+            <x-input-error :messages="$errors->get('prenom_user')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

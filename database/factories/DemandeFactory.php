@@ -42,7 +42,7 @@ class DemandeFactory extends Factory
         // Obtenez le chemin d'accès relatif du fichier
         $filePathpdf = 'file/' . $randomFilepdf->getFilename();
         return [
-            'nom_demande' => $this->faker->sentence(10, true),
+            'nom_demande' => $this->faker->word(2, true),
             'prenom_demande' => $this->faker->sentence(4, true),
             'email_demande' => fake()->unique()->safeEmail(),
             'image_demande' => $filePath,

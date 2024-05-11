@@ -2,11 +2,18 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <!-- Validation Error -->
+    @error('valider_user')
+        <div class="mt-4 text-red-500">
+            {{ $message }}
+        </div>
+    @enderror
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Success Message -->
-        @if(session('success'))
+        @if (session('success'))
             <div class="mt-4 text-green-500">
                 {{ session('success') }}
             </div>
@@ -39,7 +46,9 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-center mt-4 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <!-- Submit Button -->
+        <div
+            class="flex items-center justify-center mt-4 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     href="{{ route('password.request') }}">
@@ -50,9 +59,11 @@
                 {{ __('Se connecter') }}
             </x-primary-button>
         </div>
+
+        <!-- Link to Registration -->
         <a class="flex items-center justify-center mt-4 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             href="{{ route('register') }}">
-            {{ __('créer un compte') }}
+            {{ __('Créer un compte') }}
         </a>
     </form>
 </x-guest-layout>

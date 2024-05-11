@@ -38,7 +38,8 @@
                                                 <span
                                                     class="float-right"><b>{{ $nombre_etat_id_2 }}</b>/{{ $nombre_demandes }}</span>
                                                 <div class="progress progress-sm">
-                                                    <div class="progress-bar bg-success" style="width: {{ $pourcentage_etat_id_2 }}%"></div>
+                                                    <div class="progress-bar bg-success"
+                                                        style="width: {{ $pourcentage_etat_id_2 }}%"></div>
                                                 </div>
                                             </div>
 
@@ -226,14 +227,14 @@
                                                 @endif
                                                 <div class="col">
                                                     <form action="{{ route('admin.demande.destroy', $demande) }}"
-                                                        method="post">
+                                                        id="delete-form" method="post">
                                                         @csrf
                                                         @method('delete')
-                                                        <button class="btn btn-reset">
-                                                            <span><i class="fas fa-times-circle"
-                                                                    style="color: rgb(255, 14, 14);"> Réfusé</i></span>
-                                                        </button>
                                                     </form>
+                                                    <button class="btn btn-reset" onclick="showConfirmationModal()">
+                                                        <span><i class="fas fa-times-circle"
+                                                                style="color: rgb(255, 14, 14);"> Réfusé</i></span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -269,4 +270,50 @@
         </a>
     </div>
     <!-- /.content-wrapper -->
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content" style="background-color: rgba(246, 252, 246, 0)">
+            <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <div class="card card-widget widget-user">
+                            <div class="widget-user-header" style="background-color: rgb(255, 14, 14); color: white;">
+                                <h3 class="">Êtes-vous sûr de vouloir supprimer cet élément ?</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-12 mt-3 border-top">
+                                    <div class="form-group text-center mt-3">
+                                        <div>
+                                            <button class="btn btn-reset" onclick="deleteItem()">
+                                                <span class="mr-5"><i class="fas fa-check-circle"
+                                                        style="color: rgb(255, 14, 14);">
+                                                        Oui,
+                                                        Suprimé</i></span></button>
+                                            <button class="btn btn-reser" onclick="hideConfirmationModal()">
+                                                <span><i class="fas fa-times-circle" style="color: rgb(0, 160, 5);">
+                                                        Annulé
+                                                    </i></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showConfirmationModal() {
+            document.getElementById('confirmation-modal').style.display = 'block';
+        }
+
+        function hideConfirmationModal() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        }
+
+        function deleteItem() {
+            document.getElementById('delete-form').submit();
+        }
+    </script>
 @endsection

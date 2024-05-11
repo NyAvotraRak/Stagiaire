@@ -31,8 +31,8 @@ class ServiceFactory extends Factory
         // Obtenez le chemin d'accès relatif du fichier
         $filePath = 'file/' . $randomFile->getFilename();
         return [
-            'nom_service' => $this->faker->sentence(6, true),
-            'description_service' => $this->faker->sentences(4, true),
+            'nom_service' => $this->faker->sentence(2, true),
+            'description_service' => $this->faker->sentences(2, true),
             'image_service' => $filePath,
         ];
     }

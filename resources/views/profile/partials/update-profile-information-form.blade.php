@@ -16,13 +16,6 @@
     <form method="post" action="{{ route('profile.update', $user) }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
-
-        {{-- <div>
-            <x-input-label for="image_users" :value="__('Photo')" />
-            <x-text-input id="image_users" name="image_users" type="file" class="mt-1 block w-full" :value="old('image_users', $user->image_users)"
-                required autofocus autocomplete="image_users" />
-            <x-input-error class="mt-2" :messages="$errors->get('image_users')" />
-        </div> --}}
         <div>
             <x-input-label for="image_users" :value="__('Image de profil')" />
             <input id="image_users" name="image_users" type="file" class="mt-1 block w-full" accept="image/*"
@@ -32,10 +25,16 @@
 
 
         <div>
-            <x-input-label for="name" :value="__('Nom')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)"
-                required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-input-label for="nom_user" :value="__('Nom')" />
+            <x-text-input id="nom_user" name="nom_user" type="text" class="mt-1 block w-full" :value="old('nom_user', $user->nom_user)"
+                required autofocus autocomplete="nom_user" />
+            <x-input-error class="mt-2" :messages="$errors->get('nom_user')" />
+        </div>
+        <div>
+            <x-input-label for="prenom_user" :value="__('Prenom')" />
+            <x-text-input id="prenom_user" name="prenom_user" type="text" class="mt-1 block w-full" :value="old('prenom_user', $user->prenom_user)"
+                required autofocus autocomplete="prenom_user" />
+            <x-input-error class="mt-2" :messages="$errors->get('prenom_user')" />
         </div>
 
         <div>

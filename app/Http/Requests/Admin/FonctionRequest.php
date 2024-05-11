@@ -23,10 +23,12 @@ class FonctionRequest extends FormRequest
      */
     public function rules(): array
     {
-        $fonctionId = $this->route('fonction')->id; // Récupérer l'ID de la fonction depuis la route
+        // dd('fd');
+        $fonctionId = $this->route('fonction') ? $this->route('fonction')->id : null;
 
         return [
             'nom_fonction' => ['required', 'min:2', Rule::unique(Fonction::class)->ignore($fonctionId)],
+            'services' => ['array', 'exists:services,id', 'required'],
             'role' => [
                 'required',
                 'min:2',

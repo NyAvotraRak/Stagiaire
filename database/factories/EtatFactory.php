@@ -17,7 +17,7 @@ class EtatFactory extends Factory
     public function definition(): array
     {
         static $index = 0;
-        $etats = ['En attente', 'Entretien', 'En cours', 'Fin', 'Terminé'];
+        $etats = ['En attente', 'Entretien', 'En cours', 'Fin', 'Terminé', 'Abondonné'];
 
         // Assurez-vous que l'index reste dans les limites du tableau
         $index = ($index >= count($etats)) ? 0 : $index;

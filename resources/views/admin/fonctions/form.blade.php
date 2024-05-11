@@ -43,6 +43,14 @@
                                         'value' => old('nom_fonction', $fonction->nom_fonction),
                                     ])
                                     @include('shared.select', ['name' => 'role', 'label' => 'Role :'])
+                                    @include('shared.select', [
+                                        'name' => 'services',
+                                        'label' => 'Services :',
+                                        'multiple' => true,
+                                        'options' => $services,
+                                        'selected' => $servicesSelectionnes,
+                                    ])
+
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">

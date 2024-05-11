@@ -86,11 +86,18 @@ class AccepteController extends Controller
         $dateActuelle = Carbon::now()->toDateString();
 
         // Mise à jour de l'état_id à 4 pour les demandes dont la date de fin est égale à la date actuelle
-        Demande::whereIn('id', function ($query) use ($dateActuelle) {
-            $query->select('demande_id')
-                ->from('detail_stages')
-                ->whereDate('date_fin', $dateActuelle);
-        })->update(['etat_id' => 4]);
+        // Demande::whereNotIn('etat_id', [6]) // Ajoutez cette ligne pour exclure les demandes avec etat_id 6
+        //     ->whereIn('id', function ($query) use ($dateActuelle) {
+        //         $query->select('demande_id')
+        //             ->from('detail_stages')
+        //             ->whereDate('date_fin', $dateActuelle);
+        //     })->update(['etat_id' => 4]);
+        Demande::whereNotIn('etat_id', [6]) // Exclure les demandes avec etat_id 6
+            ->whereIn('id', function ($query) use ($dateActuelle) {
+                $query->select('demande_id')
+                    ->from('detail_stages')
+                    ->whereDate('date_fin', '<=', $dateActuelle); // Condition de date
+            })->update(['etat_id' => 4]);
 
         // Récupération des stagiaires avec les conditions de recherche
         $stagiaires = Detail_stage::select('detail_stages.*', 'demandes.image_demande', 'demandes.nom_demande', 'demandes.prenom_demande', 'demandes.email_demande', 'demandes.cv', 'demandes.lm', 'demandes.autres', 'services.nom_service', 'etats.nom_etat', 'niveaux.nom_niveau')
@@ -98,7 +105,7 @@ class AccepteController extends Controller
             ->join('services', 'demandes.service_id', '=', 'services.id')
             ->join('etats', 'demandes.etat_id', '=', 'etats.id')
             ->join('niveaux', 'demandes.niveau_id', '=', 'niveaux.id')
-            ->whereIn('etats.nom_etat', ['En cours', 'Fin', 'Terminé']);
+            ->whereIn('etats.nom_etat', ['En cours', 'Fin', 'Terminé', 'Abondonné']);
 
         // Filtrage supplémentaire si des paramètres de recherche sont présents
         if ($nom_stagiaire = $request->validated()['nom_stagiaire'] ?? null) {
@@ -141,11 +148,17 @@ class AccepteController extends Controller
             $query->where('etat_id', 5);
         })->count();
 
+        // Nombre de stagiaires avec etat_id égal à 6
+        $nombre_etat_id_6 = Detail_stage::whereHas('demande', function ($query) {
+            $query->where('etat_id', 6);
+        })->count();
+
 
         // Calcul des pourcentages
         $pourcentage_etat_id_3 = $nombre_total_stagiaires > 0 ? ($nombre_etat_id_3 / $nombre_total_stagiaires) * 100 : 0;
         $pourcentage_etat_id_4 = $nombre_total_stagiaires > 0 ? ($nombre_etat_id_4 / $nombre_total_stagiaires) * 100 : 0;
         $pourcentage_etat_id_5 = $nombre_total_stagiaires > 0 ? ($nombre_etat_id_5 / $nombre_total_stagiaires) * 100 : 0;
+        $pourcentage_etat_id_6 = $nombre_total_stagiaires > 0 ? ($nombre_etat_id_6 / $nombre_total_stagiaires) * 100 : 0;
         // dd($nombre_etat_id_5);
 
         // Retour de la vue avec les stagiaires et les statistiques
@@ -166,9 +179,11 @@ class AccepteController extends Controller
             'nombre_etat_id_3' => $nombre_etat_id_3,
             'nombre_etat_id_4' => $nombre_etat_id_4,
             'nombre_etat_id_5' => $nombre_etat_id_5,
+            'nombre_etat_id_6' => $nombre_etat_id_6,
             'pourcentage_etat_id_3' => $pourcentage_etat_id_3,
             'pourcentage_etat_id_4' => $pourcentage_etat_id_4,
             'pourcentage_etat_id_5' => $pourcentage_etat_id_5,
+            'pourcentage_etat_id_6' => $pourcentage_etat_id_6,
         ]);
     }
 

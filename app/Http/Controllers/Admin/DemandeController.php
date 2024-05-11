@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Mail;
 
 class DemandeController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Demande::class, 'demande');
+    }
     /**
      * Display a listing of the resource.
      */ public function index(SearchDemandeRequest $request)

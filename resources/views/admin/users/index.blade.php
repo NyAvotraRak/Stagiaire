@@ -56,6 +56,29 @@
                                                     <li class="small"><span class="fa-li"><i class="fas fa-user"
                                                                 style="color: rgb(0, 160, 5);"></i></span>{{ $user->fonction->role }}
                                                     </li>
+                                                    {{-- <!-- Statut de validation -->
+                                                    <li class="small">
+                                                        <span class="fa-li"><i class="fas fa-check-circle"
+                                                                style="color: {{ $user->valider_user ? 'green' : 'red' }}"></i></span>
+                                                        {{ $user->valider_user ? 'Compte validé' : 'Compte non validé' }}
+                                                    </li> --}}
+                                                    <form method="POST"
+                                                        action="{{ route('updateValidation', ['id' => $user->id]) }}">
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <!-- Statut de validation -->
+                                                        <li class="small">
+                                                            <label class="checkbox-container">
+                                                                <!-- Case à cocher stylisée -->
+                                                                <input type="checkbox" class="valider-user-checkbox"
+                                                                    name="valider_user"
+                                                                    {{ $user->valider_user ? 'checked' : '' }}>
+                                                                <span class="checkmark"></span>
+                                                                {{ $user->valider_user ? 'Compte validé' : 'Compte non validé' }}
+                                                            </label>
+                                                        </li>
+                                                    </form>
                                                 </ul>
                                             </div>
                                             <div class="col-5 text-center">
@@ -132,6 +155,15 @@
             </div>
         </div>
         <!-- /.content-wrapper -->
+        <!-- JavaScript pour la soumission automatique du formulaire -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.valider-user-checkbox').change(function() {
+                    $(this).closest('form').submit();
+                });
+            });
+        </script>
 
         <!-- JavaScript pour la confirmation de suppression -->
         <script>

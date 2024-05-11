@@ -27,8 +27,8 @@ class MinistereFactory extends Factory
         $filePath = 'file/' . $randomFile->getFilename();
 
         return [
-            'titre' => $this->faker->sentence(6, true),
-            'description_ministere' => $this->faker->sentences(4, true),
+            'titre' => $this->faker->sentence(2, true),
+            'description_ministere' => $this->faker->sentences(2, true),
             'image_ministere' => $filePath,
         ];
     }

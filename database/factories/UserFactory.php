@@ -25,7 +25,7 @@ class UserFactory extends Factory
         $serviceId = Service::inRandomOrder()->first()->id;
 
         // Obtenez un ID de fonction existant
-        $fonctionId = Fonction::inRandomOrder()->first()->id;
+        $fonctionId = 1;
         // Obtenez la liste des fichiers dans le répertoire 'public/dist/img'
         $files = File::files(public_path('dist/img'));
 
@@ -35,10 +35,12 @@ class UserFactory extends Factory
         // Obtenez le chemin d'accès relatif du fichier
         $filePath = 'file/' . $randomFile->getFilename();
         return [
-            'name' => fake()->name(),
+            'nom_user' => fake()->name(),
+            'prenom_user' => fake()->name(),
+            'valider_user' => true,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => Hash::make('123456789'),
+            'password' => Hash::make('123456'),
             'remember_token' => Str::random(10),
             'image_users' => $filePath,
             'service_id' => $serviceId,

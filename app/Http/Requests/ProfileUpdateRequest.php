@@ -18,7 +18,9 @@ class ProfileUpdateRequest extends FormRequest
         // dd('er');
         return [
             'image_users' => ['image', 'max:2000'],
-            'name' => ['required', 'string', 'max:255'],
+            'nom_user' => ['required', 'string', 'max:255'],
+            'prenom_user' => ['required', 'string', 'max:255'],
+            'valider_user' => ['nullable', 'boolean'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'fonction_id' => ['required', 'exists:fonctions,id'],
             // 'password' => 'required|string|min:6',

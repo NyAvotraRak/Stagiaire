@@ -25,7 +25,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // $request->authenticate();
+
+        // $request->session()->regenerate();
+
+        // return redirect()->intended(RouteServiceProvider::HOME);
+
         $request->authenticate();
+        if ($request->user()->valider_user) {
+            return redirect()->back()->with('error', 'Votre compte n\'a pas encore été validé.');
+        }
 
         $request->session()->regenerate();
 

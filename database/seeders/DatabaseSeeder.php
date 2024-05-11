@@ -23,14 +23,16 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         // User::factory(1)->create([
-        //     'name' => 'Administrateur',
+        //     'nom_user' => 'Administrateur',
         //     'email' => 'admin@gmail.com',
         // ]);
-        // Service::factory(10)->create();
-        // Fonction::factory(10)->create();
-        // Niveau::factory(5)->create();
-        // Etat::factory(5)->create();
-        // Ministere::factory(1)->create();
+
         Demande::factory(10)->create();
+
+        // Service::factory(3)->create();
+        // Fonction::factory(3)->create();
+        // Niveau::factory(5)->create();
+        // Etat::factory(6)->create();
+        // Ministere::factory(1)->create();
     }
 }

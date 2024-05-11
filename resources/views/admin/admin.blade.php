@@ -99,7 +99,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon"></i>
                                 <p class="black-text">
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->nom_user }} {{ Auth::user()->prenom_user }}
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>

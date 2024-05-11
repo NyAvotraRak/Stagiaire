@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\AcceuilController;
 use App\Http\Controllers\Admin\AccepteController;
+// use App\Http\Controllers\Admin\AffichePDF;
 use App\Http\Controllers\Admin\AttestationController;
 use App\Http\Controllers\Admin\DemandeController;
 use App\Http\Controllers\Admin\FonctionController;
 use App\Http\Controllers\Admin\MinistereController;
 use App\Http\Controllers\Admin\NiveauController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\UpdateEtatController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +33,8 @@ Route::get('/services/{slug}-{service}', [AcceuilController::class, 'show'])->na
     'service' => $idRegex,
     'slug' => $slugRegex
 ]);
+Route::put('/users/{id}/updateValidation', [UserController::class, 'updateValidation'])->name('updateValidation');
+
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('service', ServiceController::class)->except(['show']);
@@ -43,8 +47,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/accepte/store/{demande}', [AccepteController::class, 'store'])->name('accepte.store');
     Route::get('/accepte/{demande_id}', [AccepteController::class, 'add'])->name('accepte.add');
     Route::get('/attestation/{stagiaire}', [AttestationController::class, 'downloadPdfAttestation'])->name('attestation.downloadPdfAttestation');
+    Route::get('/abondonné/{stagiaire}', [UpdateEtatController::class, 'abondonner'])->name('UpdateEtat');
     Route::get('/utilisateur', [ProfileController::class, 'index'])->name('utilisateur.index');
-
+    // Route::get('afficher-pdf/{lm}', [AffichePDF::class, 'readPDF'])->name('readPDF');
 });
 
 Route::get('/dashboard', function () {

@@ -16,9 +16,13 @@ class FonctionFactory extends Factory
      */
     public function definition(): array
     {
+        static $count = 0; // Variable statique pour compter le nombre d'enregistrements créés
+
+        $count++; // Incrémentez le compteur
+
         return [
-            'nom_fonction' => $this->faker->sentence(6, true),
-            'role' => $this->faker->randomElement(['Administrateur', 'Utilisateur'])
+            'nom_fonction' => $this->faker->sentence(2, true),
+            'role' => $count === 1 ? 'Administrateur' : 'Utilisateur', // Si c'est le premier enregistrement, définissez le rôle sur "Administrateur", sinon sur "Utilisateur"
         ];
     }
 }

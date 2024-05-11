@@ -5,6 +5,74 @@
 @section('content')
     <div class="content-wrapper">
         <section class="content-header">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Nombre total du stagiaire : {{ $nombre_total_stagiaires }}</h5>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mx-auto">
+
+                                            <div class="progress-group">
+                                                En cours
+                                                <span
+                                                    class="float-right"><b>{{ $nombre_etat_id_3 }}</b>/{{ $nombre_total_stagiaires }}</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-primary"
+                                                        style="width: {{ $pourcentage_etat_id_3 }}%"></div>
+                                                </div>
+                                            </div>
+                                            <!-- /.progress-group -->
+                                            <!-- /.progress-group -->
+                                            <div class="progress-group">
+                                                <span class="progress-text">Fin</span>
+                                                <span
+                                                    class="float-right"><b>{{ $nombre_etat_id_4 }}</b>/{{ $nombre_total_stagiaires }}</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-warning"
+                                                        style="width: {{ $pourcentage_etat_id_4 }}%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="progress-group">
+                                                <span class="progress-text">Terminé</span>
+                                                <span
+                                                    class="float-right"><b>{{ $nombre_etat_id_5 }}</b>/{{ $nombre_total_stagiaires }}</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-orange"
+                                                        style="width: {{ $pourcentage_etat_id_5 }}%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="progress-group">
+                                                <span class="progress-text">Abondonné</span>
+                                                <span
+                                                    class="float-right"><b>{{ $nombre_etat_id_6 }}</b>/{{ $nombre_total_stagiaires }}</span>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-danger"
+                                                        style="width: {{ $pourcentage_etat_id_6 }}%"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- /.progress-group -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+
+                                <!-- ./card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div><!--/. container-fluid -->
+            </section>
             {{-- <div class="container-fluid"> --}}
             <div class="col-12">
                 <div class="">
@@ -83,6 +151,16 @@
                                             <!-- Deuxième colonne de description -->
                                             <div class="description-block">
                                                 <div class="form-group text-center mt-3">
+                                                    @if ($stagiaire->nom_etat == 'En cours')
+                                                        <div class="d-flex justify-content-end mr-1">
+                                                            <a href="{{ route('admin.UpdateEtat', ['stagiaire' => $stagiaire->theme]) }}"
+                                                                class="genric-btn info-border circle"
+                                                                onclick="showConfirmationModalFonction()">
+                                                                <span><i class="fas fa-times-circle"
+                                                                        style="color: rgb(255, 14, 14);"></i></span>
+                                                            </a>
+                                                        </div>
+                                                    @endif
                                                     @if ($stagiaire->nom_etat == 'Fin' && $stagiaire->date_fin != now()->toDateString())
                                                         <a href="{{ route('admin.attestation.downloadPdfAttestation', ['stagiaire' => $stagiaire->theme]) }}"
                                                             class="genric-btn info-border circle">
@@ -97,15 +175,6 @@
                                                     @else
                                                         <div><br></div>
                                                     @endif
-                                                    {{-- <div>
-                                                        <span><i class="fas fa-certificate"
-                                                                style="color: rgb(0, 160, 5);">
-                                                                Attestation </i></span>
-                                                    </div>
-                                                    <div>
-                                                        <span><i class="fas fa-copy" style="color: rgb(255, 14, 14);">
-                                                                Duplicata </i></span>
-                                                    </div> --}}
                                                 </div>
                                                 <h5 class="description-header">Status : {{ $stagiaire->nom_etat }}</h5>
                                                 <div>
@@ -171,20 +240,8 @@
                                                             <!-- /.description-block -->
                                                         </div>
                                                     </div>
-                                                    {{-- <div>
-                                                        @if ($stagiaire->cv)
-                                                            <a href="{{ $stagiaire->cv_url() }}">cv</a>
-                                                        @endif
-                                                        @if ($stagiaire->lm)
-                                                            <a href="{{ $stagiaire->lm_url() }}">lm</a>
-                                                        @endif
-                                                        @if ($stagiaire->autres)
-                                                            <a href="{{ $stagiaire->autres_url() }}">autres</a>
-                                                        @endif
-                                                        <h7>{{ $stagiaire->email_demande }}</h7>
-                                                    </div> --}}
                                                     <div>
-                                                        {{ $stagiaire->nom_service }}
+                                                        <p><strong>Service : </strong>{{ $stagiaire->nom_service }}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -225,6 +282,51 @@
                             <!-- /.widget-user -->
                         </div>
                         {{-- <hr style="background-color: rgba(211, 211, 211, 0.219);"> --}}
+                        <!-- Confirmation Modal -->
+                        <div id="confirmation-modal" class="modal">
+                            <div class="modal-content" style="background-color: rgba(246, 252, 246, 0)">
+                                <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            <div class="card card-widget widget-user">
+                                                <div class="widget-user-header"
+                                                    style="background-color: rgb(255, 14, 14); color: white;">
+                                                    <h3 class="">Êtes-vous sûr de vouloir supprimer cet élément ?
+                                                    </h3>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="col-sm-12 mt-3 border-top">
+                                                        <div class="form-group text-center mt-3">
+                                                            <div>
+                                                                <!-- Ajoutez l'attribut href avec l'URL de destination -->
+                                                                <a href="{{ route('admin.UpdateEtat', ['stagiaire' => $stagiaire->theme]) }}"
+                                                                    class="btn btn-reser"
+                                                                    onclick="confirmDeleteFonction()">
+                                                                    <span class="mr-5">
+                                                                        <i class="fas fa-check-circle"
+                                                                            style="color: rgb(255, 14, 14);">
+                                                                            Oui,
+                                                                            Supprimé</i>
+                                                                    </span>
+                                                                </a>
+                                                                <button class="btn btn-reset"
+                                                                    onclick="hideConfirmationModalFonction()">
+                                                                    <span>
+                                                                        <i class="fas fa-times-circle"
+                                                                            style="color: rgb(0, 160, 5);">
+                                                                            Annulé</i>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @empty
                         <div class="col">
                             Mafy mafy ny midona aminay eee
@@ -242,4 +344,24 @@
         </a>
     </div>
     <!-- /.content-wrapper -->
+
+    <!-- JavaScript pour la confirmation de suppression -->
+    <script>
+        function showConfirmationModalFonction() {
+            event.preventDefault(); // Empêche l'action par défaut du lien
+            document.getElementById('confirmation-modal').style.display = 'block';
+        }
+
+        function hideConfirmationModalFonction() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        }
+
+        function confirmDeleteFonction() {
+            // Effectuez ici l'action de suppression, par exemple :
+            // document.getElementById('delete-form-fonction').submit();
+            // ou une autre action que vous souhaitez effectuer lors de la suppression.
+            console.log("Action de suppression confirmée !");
+            hideConfirmationModalFonction(); // Cacher la modal après la confirmation.
+        }
+    </script>
 @endsection

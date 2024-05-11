@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\FonctionRequest;
 use App\Http\Requests\Admin\SearchFonctionRequest;
 use App\Models\Fonction;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class FonctionController extends Controller
@@ -38,10 +39,14 @@ class FonctionController extends Controller
     public function create()
     {
         $fonction = new Fonction();
+        $servicesSelectionnes = []; // Initialiser la variable
         return view('admin.fonctions.form', [
-            'fonction' => $fonction
+            'fonction' => $fonction,
+            'services' => Service::pluck('nom_service', 'id'),
+            'servicesSelectionnes' => $servicesSelectionnes // Passer la variable à la vue
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -49,6 +54,7 @@ class FonctionController extends Controller
     public function store(FonctionRequest $request)
     {
         $fonction = Fonction::create($request->validated());
+        $fonction->services()->sync($request->validated('services'));
         return to_route('admin.fonction.index')->with('success', 'Le fonction a bien été crée');
     }
 
@@ -57,8 +63,12 @@ class FonctionController extends Controller
      */
     public function edit(Fonction $fonction)
     {
+        // Récupérer les services liés à cette fonction spécifique
+        $servicesSelectionnes = $fonction->exists ? $fonction->services()->pluck('id')->toArray() : [];
         return view('admin.fonctions.form', [
-            'fonction' => $fonction
+            'fonction' => $fonction,
+            'services' => Service::pluck('nom_service', 'id'),
+            'servicesSelectionnes' => $servicesSelectionnes
         ]);
     }
 
@@ -67,8 +77,8 @@ class FonctionController extends Controller
      */
     public function update(FonctionRequest $request, Fonction $fonction)
     {
-        // dd($fonction);
         $fonction->update($request->validated());
+        $fonction->services()->sync($request->validated('services'));
         return to_route('admin.fonction.index')->with('success', 'Le fonction a bien été modifié');
     }
 

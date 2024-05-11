@@ -22,7 +22,9 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'nom_user' => 'required|string|max:255',
+            'prenom_user' => 'required|string|max:255',
+            'valider_user' => 'nullable|boolean',
             'email' => 'required|string|email|max:255|unique:users',
             'fonction_id' => 'nullable|exists:fonctions,id',
             'service_id' => 'nullabe|exists:services,id',

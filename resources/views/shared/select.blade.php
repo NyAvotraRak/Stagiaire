@@ -39,6 +39,20 @@
                     </option>
                 @endforeach
             </select>
+        @elseif ($name === 'services')
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <!-- shared/select.blade.php -->
+
+            <select class="form-control @error($name) is-invalid @enderror" name="{{ $name }}[]"
+                id="{{ $name }}" multiple>
+                @foreach ($services as $k => $v)
+                    <option value="{{ $k }}" {{ in_array($k, (array) $selected) ? 'selected' : '' }}>
+                        {{ $v }}
+                    </option>
+                @endforeach
+            </select>
         @else
             <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-chevron-down"></i></span>

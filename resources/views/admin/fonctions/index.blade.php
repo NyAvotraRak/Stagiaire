@@ -122,52 +122,49 @@
     </div>
 
     <!-- Confirmation Modal -->
-    <div id="confirmation-modal-fonction" class="modal">
-        <div class="modal-content" style="background-color:rgba(246, 252, 246, 0)">
-            <div class="row justify-content-center">
-                <!-- /.col -->
-                <div class="col-md-4">
-                    <!-- Widget: user widget style 1 -->
-                    <div class="card card-widget widget-user">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header" style="background-color: rgb(255, 14, 14); color: white;">
-                            <h3 class="">Êtes-vous sûr de vouloir supprimer cet élément ?</h3>
-                        </div>
-                        <div class="card-footer">
-                            <div class="col-sm-12 mt-3 border-top">
-                                <!-- Nouvelle colonne pour les icônes de refus et d'acceptation -->
-                                <div class="form-group text-center mt-3">
-                                    <div>
-                                        <button class="btn btn-reser" onclick="deleteItemFonction()">
-                                            <span class="mr-5">
-                                                <i class="fas fa-check-circle" style="color: rgb(255, 14, 14);"> Oui,
-                                                    Supprimé</i>
-                                            </span>
-                                        </button>
-                                        <button class="btn btn-reser" onclick="hideConfirmationModalFonction()">
-                                            <span>
-                                                <i class="fas fa-times-circle" style="color: rgb(0, 160, 5);"> Annulé</i>
-                                            </span>
-                                        </button>
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content" style="background-color: rgba(246, 252, 246, 0)">
+            <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <div class="card card-widget widget-user">
+                            <div class="widget-user-header" style="background-color: rgb(255, 14, 14); color: white;">
+                                <h3 class="">Êtes-vous sûr de vouloir supprimer cet élément ?</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-12 mt-3 border-top">
+                                    <div class="form-group text-center mt-3">
+                                        <div>
+                                            <button class="btn btn-reser" onclick="deleteItemFonction()">
+                                                <span class="mr-5">
+                                                    <i class="fas fa-check-circle" style="color: rgb(255, 14, 14);"> Oui,
+                                                        Supprimé</i>
+                                                </span>
+                                            </button>
+                                            <button class="btn btn-reser" onclick="hideConfirmationModalFonction()">
+                                                <span>
+                                                    <i class="fas fa-times-circle" style="color: rgb(0, 160, 5);">
+                                                        Annulé</i>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- /.widget-user -->
                 </div>
             </div>
         </div>
     </div>
-
     <!-- JavaScript pour la confirmation de suppression -->
     <script>
         function showConfirmationModalFonction() {
-            document.getElementById('confirmation-modal-fonction').style.display = 'block';
+            document.getElementById('confirmation-modal').style.display = 'block';
         }
 
         function hideConfirmationModalFonction() {
-            document.getElementById('confirmation-modal-fonction').style.display = 'none';
+            document.getElementById('confirmation-modal').style.display = 'none';
         }
 
         function deleteItemFonction() {
