@@ -85,7 +85,7 @@ class DemandeRequest extends FormRequest
             'image_demande' => 'required|image',
             'cv' => 'required|mimes:pdf', // Accepter uniquement les fichiers PDF
             'lm' => 'required|mimes:pdf', // Accepter uniquement les fichiers PDF
-            'autres' => 'required|mimes:pdf', // Accepter uniquement les fichiers PDF
+            'autres' => 'nullable|mimes:pdf', // Accepter uniquement les fichiers PDF
             'service_id' => 'required|exists:services,id',
             'etat_id' => 'required|exists:etats,id',
             'niveau_id' => [

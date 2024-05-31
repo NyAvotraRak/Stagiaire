@@ -23,14 +23,20 @@ class ServiceRequest extends FormRequest
      */
     public function rules(): array
     {
+        $serviceId = $this->route('service') ? $this->route('service')->id : null; // Vérifie si $niveau est défini
         $rules = [
-            'nom_service' => ['required', 'min:2'],
+            'nom_service' => [
+                'required',
+                'min:2',
+                // Règle unique, ignorée pour le service en cours d'édition
+                Rule::unique('services')->ignore($serviceId)
+            ],
             'description_service' => ['required', 'min:8'],
         ];
 
         // Ajoutez les règles uniquement si c'est une création de service
         if ($this->isMethod('post')) {
-            $rules['image_service'] = ['required', 'image'];
+            $rules['image_service'] = ['nullable', 'image'];
         }
 
         return $rules;

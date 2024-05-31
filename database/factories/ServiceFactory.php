@@ -22,6 +22,9 @@ class ServiceFactory extends Factory
      */
     public function definition()
     {
+        // Configure Faker to use the French locale
+        $this->faker->locale('fr_FR');
+
         // Obtenez la liste des fichiers dans le répertoire 'public/dist/img'
         $files = File::files(public_path('dist/img'));
 
@@ -31,8 +34,8 @@ class ServiceFactory extends Factory
         // Obtenez le chemin d'accès relatif du fichier
         $filePath = 'file/' . $randomFile->getFilename();
         return [
-            'nom_service' => $this->faker->sentence(2, true),
-            'description_service' => $this->faker->sentences(2, true),
+            'nom_service' => $this->faker->company,
+            'description_service' => $this->faker->text(100),
             'image_service' => $filePath,
         ];
     }

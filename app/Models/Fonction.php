@@ -11,7 +11,8 @@ class Fonction extends Model
 
     protected $fillable = [
         'nom_fonction',
-        'role'
+        'role',
+        'service_id'
     ];
     public $timestamps = true;
 
@@ -19,8 +20,17 @@ class Fonction extends Model
     {
         return $this->hasMany(User::class);
     }
-    public function services()
+    // public function services()
+    // {
+    //     return $this->belongsToMany(Service::class, 'fonction_service');
+    // }
+    public function service()
     {
-        return $this->belongsToMany(Service::class, 'fonction_service');
+        return $this->belongsTo(Service::class);
     }
+
+    // public function fonctionServices()
+    // {
+    //     return $this->hasMany(FonctionService::class);
+    // }
 }

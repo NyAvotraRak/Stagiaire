@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Admin\DemandeRequest;
 use App\Models\Demande;
 use App\Models\Etat;
+use App\Models\Ministere;
 use App\Models\Niveau;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -14,8 +15,10 @@ class AcceuilController extends Controller
 {
     public function index()
     {
+        $ministeres = Ministere::orderBy('created_at', 'desc')->get();
         $services = Service::orderBy('created_at', 'desc')->get();
-        return view('acceuil', ['services' => $services]);
+        // dd($ministere);
+        return view('acceuil', ['services' => $services, 'ministeres' => $ministeres]);
     }
 
     public function show(string $slug, Service $service)
@@ -130,7 +133,7 @@ class AcceuilController extends Controller
         // $pdfMimeType = $request->file('cv')->getClientMimeType();
 
         // Rediriger l'utilisateur vers la page d'accueil après avoir créé la demande
-        return redirect()->route('acceuil.index')->with('success', 'La demande a bien été créée');
+        return redirect()->route('acceuil.index')->with('success', 'La demande a bien été envoyée, Veuillez visiter souvent votre email pour le retour');
     }
 
     private function extract_data(DemandeRequest $request)

@@ -50,27 +50,19 @@
             <select id="fonction_id" name="fonction_id"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 @foreach ($fonctions as $fonction)
-                    <option value="{{ $fonction->id }}"
-                        {{ old('fonction_id', $user->fonction_id) == $fonction->id ? 'selected' : '' }}>
-                        {{ $fonction->nom_fonction }}</option>
+                    @php
+                        $optionValue = $fonction->id . '_' . $fonction->service_id;
+                        $oldValue = old('fonction_id', $user->fonction_id . '_' . $user->fonction->service_id);
+                        // dd($optionValue, $oldValue);
+                    @endphp
+                    <option value="{{ $optionValue }}" {{ $oldValue == $optionValue ? 'selected' : '' }}>
+                        <strong>Fonction : </strong>{{ $fonction->nom_fonction }} - <strong>Service :
+                        </strong>{{ $fonction->service->nom_service }}
+                    </option>
                 @endforeach
             </select>
+
             <x-input-error class="mt-2" :messages="$errors->get('fonction_id')" />
-        </div>
-        <br>
-        <br>
-        <!-- Service -->
-        <div>
-            <x-input-label for="service_id" :value="__('Service')" />
-            <select id="service_id" name="service_id"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                @foreach ($services as $service)
-                    <option value="{{ $service->id }}"
-                        {{ old('service_id', $user->service_id) == $service->id ? 'selected' : '' }}>
-                        {{ $service->nom_service }}</option>
-                @endforeach
-            </select>
-            <x-input-error class="mt-2" :messages="$errors->get('service_id')" />
         </div>
 
         <!-- Verification Email -->

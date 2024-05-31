@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Detail_stage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttestationController extends Controller
@@ -19,10 +20,20 @@ class AttestationController extends Controller
         $stagiaire->demande->update([
             'etat_id' => 5,
         ]);
+
+        // Calculer la différence en mois entre les dates de début et de fin du stage
+        $dateDebut = Carbon::parse($stagiaire->date_debut);
+        $dateFin = Carbon::parse($stagiaire->date_fin);
+        $differenceMois = $dateDebut->diffInMonths($dateFin);
+
+        // Obtenir la date actuelle
+        $dateAujourdHui = Carbon::now()->locale('fr')->isoFormat('LL');
         // dd($stagiaire->demande->etat_id);
         // Générer le PDF
         $pdf = PDF::loadView('admin.pdf.attestation', [
-            'stagiaire' => $stagiaire
+            'stagiaire' => $stagiaire,
+            'differenceMois' => $differenceMois,
+            'dateAujourdHui' => $dateAujourdHui
         ]);
 
         // Télécharger le PDF

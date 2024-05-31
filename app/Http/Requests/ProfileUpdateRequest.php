@@ -21,10 +21,18 @@ class ProfileUpdateRequest extends FormRequest
             'nom_user' => ['required', 'string', 'max:255'],
             'prenom_user' => ['required', 'string', 'max:255'],
             'valider_user' => ['nullable', 'boolean'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'fonction_id' => ['required', 'exists:fonctions,id'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($this->user()->id),
+            ],
+            'fonction_id' => [
+                'required',
+                Rule::unique('users', 'fonction_id')->ignore($this->user()->id),
+            ],
             // 'password' => 'required|string|min:6',
-            'service_id' => ['required', 'exists:services,id']
         ];
     }
 }

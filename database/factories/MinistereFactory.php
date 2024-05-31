@@ -17,6 +17,9 @@ class MinistereFactory extends Factory
      */
     public function definition(): array
     {
+        // Configure Faker to use the French locale
+        $this->faker->locale('fr_FR');
+
         // Obtenez la liste des fichiers dans le répertoire 'public/dist/img'
         $files = File::files(public_path('dist/img'));
 

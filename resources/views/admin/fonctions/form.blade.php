@@ -25,7 +25,7 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Lorem ipsum dolor sit amet.</h3>
+                                <h3 class="card-title">Création d'une fonction</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
@@ -42,14 +42,29 @@
                                         'placeholder' => '...',
                                         'value' => old('nom_fonction', $fonction->nom_fonction),
                                     ])
-                                    @include('shared.select', ['name' => 'role', 'label' => 'Role :'])
-                                    @include('shared.select', [
-                                        'name' => 'services',
-                                        'label' => 'Services :',
-                                        'multiple' => true,
-                                        'options' => $services,
-                                        'selected' => $servicesSelectionnes,
-                                    ])
+                                    {{-- @include('shared.select', [
+                                        'name' => 'role',
+                                        'label' => 'Role :',
+                                        'value' => old('role', $fonction->role),
+                                    ]) --}}
+                                    <input type="hidden" name="role" value="Utilisateur">
+                                    @if ($fonction->exists)
+                                        @include('shared.select', [
+                                            'name' => 'service_id',
+                                            'label' => 'Services :',
+                                            'multiple' => false,
+                                            'options' => $services,
+                                            'selected' => $servicesSelectionnes,
+                                        ])
+                                    @else
+                                        @include('shared.select', [
+                                            'name' => 'service_id',
+                                            'label' => 'Services :',
+                                            'multiple' => true,
+                                            'options' => $services,
+                                            'selected' => $servicesSelectionnes,
+                                        ])
+                                    @endif
 
                                 </div>
                                 <!-- /.card-body -->

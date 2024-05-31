@@ -1,44 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
 
-<div class="card-body">
-        <div class="mt-3">
-            <div class="">
-                <div class="row  mt-4">
-                    <div class="col-6">
-                        <h1>ATTESTATION</h1>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Page Title -->
+    <title>Attestation</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="{{ asset('plugins/jqvmap/jqvmap.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+    <!-- styleko -->
+    <link rel="stylesheet" href="{{ asset('dist/css/styleko.css') }}">
+    <style>
+        /* Ajoutez une classe CSS pour la barre de navigation fixe */
+        .navbar-fixed {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            /* z-index: 1000; */
+            /* Assure que la barre de navigation apparaît au-dessus des autres éléments */
+        }
+
+        .centered-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            /* Ajustez la hauteur selon vos besoins */
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content img {
+            margin-bottom: 20px;
+            /* Espacement entre l'image et la liste */
+        }
+
+        /* Ajoutez des tabulations à chaque paragraphe */
+        p {
+            text-indent: 2em;
+            /* Ajustez l'indentation selon vos besoins */
+        }
+
+        /* Aligner le texte à droite */
+        .text-right {
+            text-align: right;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <div>
+            <div>
+                <div>
+                    <div class="centered-div">
+                        <h4><strong>REPOBLIKAN’I MADAGASIKARA
+                                <br><strong>Fitiavana – Tanindrazana – Fandrosoana</strong></h4>
                     </div>
-                    <div class="col information">
-                        <!-- <div class="single-doctor mb-4 mb-lg-0"> -->
-                        <div class="content-area">
-                            <div class="doctor-name text-center">
-                                <h3>{{ $stagiaire->demande->nom_demande }}</h3>
-                                <h4>{{ $stagiaire->demande->prenom_demande }}</h4>
-                                <h6>{{ $stagiaire->demande->niveau->nom_niveau }}</h6>
+                    <div class="centered-div">
+                        <div class="content">
+                            <div>
+                                <img src="../../../../public/dist/img/logoMID.png" alt="Image not found">
                             </div>
-                            <div class="doctor-text text-center">
-                                <p>{{ $stagiaire->demande->etat->nom_etat }}</p>
-                                <p>{{ $stagiaire->demande->service->nom_service }}</p>
+                            <div>
+                                <div>MINISTERE DE L’INTERIEUR <br> ET DE LA DECENTRALISATION</div>
+                                <div>********</div>
+                                <div>SECRETARIAT GENERAL</div>
+                                <div>*******</div>
+                                <div>DIRECTION GENERALE DE L’INTERIEUR</div>
+                                <div>*******</div>
+                                <div>DIRECTION DES SYSTEMES D’INFORMATION</div>
+                                <div>*******</div>
+                                <div>SERVICE DES RESEAUX ET DE LA GESTION <br> DES MATERIELS INFORMATIQUES</div>
                             </div>
                         </div>
-                        <!-- </div> -->
-
                     </div>
+                    <div class="centered-div">
+                        <h2>ATTESTATION DE STAGE</h2>
+                    </div>
+                    <div>
+                        <p>Le Directeur des Systèmes d’Information du Ministère de l’Intérieur, soussigné, atteste par
+                            la
+                            présente que Monsieur <strong> {{ $stagiaire->demande->nom_demande }}
+                                {{ $stagiaire->demande->prenom_demande }}</strong> a effectué un stage de
+                            <strong>{{ $differenceMois }}</strong>
+                            mois, du
+                            <strong>{{ $stagiaire->date_debut }}</strong> au
+                            <strong>{{ $stagiaire->date_fin }}</strong> auprès de notre département
+                            <strong>{{ $stagiaire->demande->service->nom_service }}</strong>.
+                        </p>
+                        <p>Ce stage a été réalisé sur le thème suivant :
+                            "<strong>{{ $stagiaire->theme }}</strong>". Ce projet consistait en
+                            <strong>{{ $stagiaire->description_theme }}</strong>.
+                        </p>
+
+                        <p>En foi de quoi, la présente attestation lui est délivrée pour servir et valoir ce que de
+                            droit
+                        </p>
+                    </div>
+                    <div class="text-right">Antananarivo, le {{ $dateAujourdHui }}.</div>
 
                 </div>
 
             </div>
         </div>
-        <!--<div class="col-lg-7">-->
-        <div id="description" class="col">
-            <!-- <div class="welcome-text mt-5 mt-lg-0"> -->
-            <div class="m-4 text-secondary">
-                <h3 class="text-center text-decoration-underline">{{ $stagiaire->theme }}</h3>
-                <p class="pt-3">{{ $stagiaire->description_theme }}</p>
-                <p>Subdue whales void god which living don't midst lesser yielding over lights whose.
-                    Cattle
-                    greater brought sixth fly den dry good tree isn't seed stars were the boring.</p>
-                <p><strong>Date debut :</strong> {{ $stagiaire->date_debut }} , <strong>Date fin
-                        :</strong> {{ $stagiaire->date_fin }}</p>
-            </div>
-        </div>
-        <hr style="background-color: rgba(211, 211, 211, 0.219);">
-</div>
+    </div>
+</body>
+
+</html>

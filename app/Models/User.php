@@ -23,7 +23,6 @@ class User extends Authenticatable
         'prenom_user',
         'email',
         'fonction_id',
-        'service_id',
         'password',
         'image_users',
         'valider_user'
@@ -52,11 +51,6 @@ class User extends Authenticatable
     public function fonction()
     {
         return $this->belongsTo(Fonction::class);
-    }
-
-    public function service()
-    {
-        return $this->belongsTo(Service::class);
     }
 
     public function image_url()

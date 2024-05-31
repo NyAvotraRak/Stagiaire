@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Demande;
 use App\Models\Etat;
 use App\Models\Fonction;
+use App\Models\FonctionService;
 use App\Models\Ministere;
 use App\Models\Niveau;
 use App\Models\Service;
@@ -20,19 +21,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // FonctionService::factory(5)->create();
         // User::factory(10)->create();
 
+        // Service::factory(5)->create();
+        // Fonction::factory(1)->create();
+        // Niveau::factory(5)->create();
+        // Etat::factory(6)->create();
+        // Ministere::factory(1)->create();
+
+        // // Demande::factory(10)->create();
         // User::factory(1)->create([
         //     'nom_user' => 'Administrateur',
         //     'email' => 'admin@gmail.com',
         // ]);
 
-        Demande::factory(10)->create();
-
-        // Service::factory(3)->create();
-        // Fonction::factory(3)->create();
-        // Niveau::factory(5)->create();
-        // Etat::factory(6)->create();
-        // Ministere::factory(1)->create();
+        User::factory(1)->create();
     }
 }

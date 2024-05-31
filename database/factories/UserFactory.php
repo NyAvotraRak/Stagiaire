@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Fonction;
+use App\Models\FonctionService;
 use App\Models\Service;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,11 +22,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        // Obtenez un ID de service existant
-        $serviceId = Service::inRandomOrder()->first()->id;
-
-        // Obtenez un ID de fonction existant
-        $fonctionId = 1;
         // Obtenez la liste des fichiers dans le répertoire 'public/dist/img'
         $files = File::files(public_path('dist/img'));
 
@@ -34,17 +30,19 @@ class UserFactory extends Factory
 
         // Obtenez le chemin d'accès relatif du fichier
         $filePath = 'file/' . $randomFile->getFilename();
+
+        // Obtenez un ID de service existant
+        $fonctionId = Fonction::inRandomOrder()->first()->id;
         return [
-            'nom_user' => fake()->name(),
-            'prenom_user' => fake()->name(),
+            'nom_user' => fake()->lastName,
+            'prenom_user' => fake()->firstName,
             'valider_user' => true,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
             'remember_token' => Str::random(10),
             'image_users' => $filePath,
-            'service_id' => $serviceId,
-            'fonction_id' => $fonctionId
+            'fonction_id' => 6
         ];
     }
 

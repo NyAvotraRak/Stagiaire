@@ -8,18 +8,23 @@ use App\Http\Requests\Admin\SearchDemandeRequest;
 use App\Mail\DemandeContactMail;
 use App\Models\Demande;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class DemandeController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Demande::class, 'demande');
-    }
+    // public function __construct()
+    // {
+    //     dd('dfsdff');
+    //     $this->authorizeResource(Demande::class, 'demande');
+    // }
     /**
      * Display a listing of the resource.
-     */ public function index(SearchDemandeRequest $request)
+     */
+    public function index(SearchDemandeRequest $request)
     {
+        $nom_demande = $request->input('nom_demande');
+        $prenom_demande = $request->input('prenom_demande');
         // Commencez par une requête Eloquent vide
         $query = Demande::select('demandes.*', 'services.nom_service', 'etats.nom_etat', 'niveaux.nom_niveau')
             ->join('services', 'demandes.service_id', '=', 'services.id')
@@ -64,7 +69,7 @@ class DemandeController extends Controller
         }
 
         // Passer les nombres de demandes à la vue
-        return view('admin.demandes.index', compact('demandes', 'nombre_demandes', 'nombre_etat_id_1', 'nombre_etat_id_2', 'pourcentage_etat_id_1', 'pourcentage_etat_id_2'));
+        return view('admin.demandes.index', compact('demandes', 'nombre_demandes', 'nombre_etat_id_1', 'nombre_etat_id_2', 'pourcentage_etat_id_1', 'pourcentage_etat_id_2', 'prenom_demande', 'nom_demande'));
     }
 
     /**
@@ -88,6 +93,9 @@ class DemandeController extends Controller
 
     public function update(Request $request, Demande $demande)
     {
+        if (Auth::user()->fonction->service->nom_service != $demande->service->nom_service) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé a accepter cette demande car elle n\'est pas dans votre service.');
+        }
         $demande->update([
             'etat_id' => 2, // Mettre à jour l'état directement
         ]);
@@ -110,6 +118,10 @@ class DemandeController extends Controller
      */
     public function destroy(Demande $demande)
     {
+        if (Auth::user()->fonction->service->nom_service != $demande->service->nom_service) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé a supprimer cette demande car elle n\'est pas dans votre service.');
+        }
+        // dd($demande->id);
         $demande->delete();
         return to_route('admin.demande.index')->with('success', 'Le demande a bien été Supprimé');
     }

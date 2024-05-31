@@ -28,6 +28,27 @@
                     </option>
                 @endforeach
             </select>
+        @elseif ($name === 'service_id')
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            {{-- <select class="form-control @error($name) is-invalid @enderror" name="{{ $name }}[]"
+                id="{{ $name }}" multiple>
+                @foreach ($services as $k => $v)
+                    <option value="{{ $k }}" {{ in_array($k, (array) $selected) ? 'selected' : '' }}>
+                        {{ $v }}
+                    </option>
+                @endforeach
+            </select> --}}
+            <select class="form-control @error($name) is-invalid @enderror"
+                name="{{ $name }}{{ $fonction->exists ? '' : '[]' }}" id="{{ $name }}"
+                {{ $fonction->exists ? '' : 'multiple' }}>
+                @foreach ($services as $k => $v)
+                    <option value="{{ $k }}" {{ in_array($k, (array) $selected) ? 'selected' : '' }}>
+                        {{ $v }}
+                    </option>
+                @endforeach
+            </select>
         @elseif ($name === 'etat_id')
             <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-chevron-down"></i></span>

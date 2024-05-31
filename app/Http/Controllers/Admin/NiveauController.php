@@ -7,16 +7,18 @@ use App\Http\Requests\Admin\NiveauRequest;
 use App\Http\Requests\Admin\SearchNiveauRequest;
 use App\Models\Niveau;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NiveauController extends Controller
 {
     public function index(SearchNiveauRequest $request)
     {
-        // Commencez par une requête Eloquent vide
-        $query = Niveau::select('niveaux.*')
-            ->orderBy('niveaux.created_at', 'desc');
+        $nom_niveau = $request->input('nom_niveau');
 
-        // Vérifiez si le nom_demande est présent dans les données validées
+        // Récupérer toutes les niveaux avec leurs critères associés, triées par date de création décroissante
+        $query = Niveau::orderBy('created_at', 'desc');
+
+        // Vérifiez si le nom_niveau est présent dans les données validées
         if ($nom_niveau = $request->validated()['nom_niveau'] ?? null) {
             $query->where('nom_niveau', 'like', "%{$nom_niveau}%");
         }
@@ -24,8 +26,29 @@ class NiveauController extends Controller
         // Exécutez la requête et récupérez les résultats
         $niveaux = $query->get();
 
-        return view('admin.niveaux.index', compact('niveaux'));
+        // Compter le nombre total de niveaux
+        $totalNiveaux = $niveaux->count();
+
+        // Compter le nombre total de niveaux en tenant compte des critères de recherche
+        $filteredNiveaux = Niveau::select('nom_niveau', DB::raw('count(*) as total'))
+            ->when($nom_niveau, function ($query, $nom_niveau) {
+                return $query->where('nom_niveau', 'like', "%{$nom_niveau}%");
+            })
+            ->groupBy('nom_niveau')
+            ->get();
+
+        // Calculer le pourcentage pour chaque niveau
+        foreach ($filteredNiveaux as $niveau) {
+            if ($totalNiveaux != 0) {
+                $niveau->pourcentage = ($niveau->total / $totalNiveaux) * 100;
+            } else {
+                $niveau->pourcentage = 0;
+            }
+        }
+
+        return view('admin.niveaux.index', compact('niveaux', 'nom_niveau', 'totalNiveaux', 'filteredNiveaux'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -80,6 +103,7 @@ class NiveauController extends Controller
      */
     public function destroy(Niveau $niveau)
     {
+        // dd($niveau->id);
         $niveau->delete();
         return to_route('admin.niveau.index')->with('success', 'Le niveau a bien été Supprimé');
     }

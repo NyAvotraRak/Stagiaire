@@ -59,7 +59,7 @@
 
                     <h2 class="brand"><strong>
                             <!-- Brand Logo -->
-                            <img src="{{ asset('dist/img/iconMID.png') }}" alt="" class="brand-image img-circle"
+                            <img src="{{ asset('dist/img/logoMID.png') }}" alt="" class="brand-image img-circle"
                                 style="width: 70px; height: 70px; object-fit: cover;"> Ministère de l'Intérieur
                         </strong>
                     </h2>

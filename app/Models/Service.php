@@ -17,14 +17,13 @@ class Service extends Model
         'image_service'
     ];
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
-
     public function demandes()
     {
         return $this->hasMany(User::class);
+    }
+    public function fonction()
+    {
+        return $this->hasMany(Fonction::class);
     }
 
     public function getSlug()
@@ -36,4 +35,8 @@ class Service extends Model
     {
         return Storage::url($this->image_service);
     }
+    // public function fonctionServices()
+    // {
+    //     return $this->hasMany(FonctionService::class);
+    // }
 }

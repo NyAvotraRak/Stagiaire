@@ -7,6 +7,22 @@
         <section class="content-header">
             <section class="content">
                 <div class="container-fluid">
+                    <!-- Afficher le message de succès -->
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="icon fas fa-check"></i> Succès !</h5>
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <!-- Afficher le message d'erreur -->
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="icon fas fa-ban"></i> Erreur !</h5>
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
@@ -84,7 +100,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
                                     <input type="text" class="form-control" placeholder="Nom" name="nom_stagiaire"
-                                        value="{{ old('nom_stagiaire', $input['nom_stagiaire'] ?? '') }}">
+                                        value="{{ request('nom_stagiaire') }}">
                                 </div>
                             </div>
                         </div>
@@ -95,7 +111,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
                                     <input type="text" class="form-control" placeholder="Prénom" name="prenom_stagiaire"
-                                        value="{{ old('prenom_stagiaire', $input['prenom_stagiaire'] ?? '') }}">
+                                        value="{{ request('prenom_stagiaire') }}">
                                 </div>
                             </div>
                         </div>
@@ -106,7 +122,7 @@
                                         <span class="input-group-text"><i class=""></i>Début</span>
                                     </div>
                                     <input type="date" class="form-control" placeholder="date de debut" name="date_debut"
-                                        value="{{ old('date_debut', $input['date_debut'] ?? '') }}">
+                                        value="{{ request('date_debut') }}">
                                 </div>
                             </div>
                         </div>
@@ -117,7 +133,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i>Fin</span>
                                     </div>
                                     <input type="date" class="form-control" placeholder="date fin" name="date_fin"
-                                        value="{{ old('date_fin', $input['date_fin'] ?? '') }}">
+                                        value="{{ request('date_fin') }}">
                                 </div>
                             </div>
                         </div>
@@ -150,32 +166,38 @@
                                         <div class="col-sm-8">
                                             <!-- Deuxième colonne de description -->
                                             <div class="description-block">
-                                                <div class="form-group text-center mt-3">
-                                                    @if ($stagiaire->nom_etat == 'En cours')
-                                                        <div class="d-flex justify-content-end mr-1">
-                                                            <a href="{{ route('admin.UpdateEtat', ['stagiaire' => $stagiaire->theme]) }}"
-                                                                class="genric-btn info-border circle"
-                                                                onclick="showConfirmationModalFonction()">
-                                                                <span><i class="fas fa-times-circle"
-                                                                        style="color: rgb(255, 14, 14);"></i></span>
-                                                            </a>
-                                                        </div>
-                                                    @endif
-                                                    @if ($stagiaire->nom_etat == 'Fin' && $stagiaire->date_fin != now()->toDateString())
-                                                        <a href="{{ route('admin.attestation.downloadPdfAttestation', ['stagiaire' => $stagiaire->theme]) }}"
-                                                            class="genric-btn info-border circle">
-                                                            <span><i class="fas fa-certificate"
-                                                                    style="color: rgb(0, 160, 5);">
-                                                                    Attestation </i></span></a>
-                                                    @elseif ($stagiaire->nom_etat == 'Terminé' && $stagiaire->date_fin != now()->toDateString())
-                                                        <a href="{{ route('admin.attestation.downloadPdfAttestation', ['stagiaire' => $stagiaire->theme]) }}"
-                                                            class="genric-btn info-border circle">
-                                                            <span><i class="fas fa-copy" style="color: rgb(255, 14, 14);">
-                                                                    Duplicata </i></span></a>
-                                                    @else
-                                                        <div><br></div>
-                                                    @endif
-                                                </div>
+
+                                                @if (Auth::user()->fonction->service->nom_service == $stagiaire->nom_service)
+                                                    <div class="form-group text-center mt-3">
+                                                        @if ($stagiaire->nom_etat == 'En cours')
+                                                            <div class="d-flex justify-content-end mr-1">
+                                                                <a href="javascript:void(0);"
+                                                                    class="genric-btn info-border circle"
+                                                                    onclick="showConfirmationModalStagiaire('{{ $stagiaire->theme }}')"
+                                                                    id="delete-form-stagiaire-{{ $stagiaire->theme }}">
+                                                                    <span><i class="fas fa-times-circle"
+                                                                            style="color: rgb(255, 14, 14);"></i></span>
+                                                                </a>
+
+                                                            </div>
+                                                        @endif
+                                                        @if ($stagiaire->nom_etat == 'Fin' && $stagiaire->date_fin != now()->toDateString())
+                                                            <a href="{{ route('admin.attestation.downloadPdfAttestation', ['stagiaire' => $stagiaire->theme]) }}"
+                                                                class="genric-btn info-border circle">
+                                                                <span><i class="fas fa-certificate"
+                                                                        style="color: rgb(0, 160, 5);">
+                                                                        Attestation </i></span></a>
+                                                        @elseif ($stagiaire->nom_etat == 'Terminé' && $stagiaire->date_fin != now()->toDateString())
+                                                            <a href="{{ route('admin.attestation.downloadPdfAttestation', ['stagiaire' => $stagiaire->theme]) }}"
+                                                                class="genric-btn info-border circle">
+                                                                <span><i class="fas fa-copy"
+                                                                        style="color: rgb(255, 14, 14);">
+                                                                        Duplicata </i></span></a>
+                                                        @else
+                                                            <div><br></div>
+                                                        @endif
+                                                    </div>
+                                                @endif
                                                 <h5 class="description-header">Status : {{ $stagiaire->nom_etat }}</h5>
                                                 <div>
                                                     <p>{{ $stagiaire->nom_demande }} {{ $stagiaire->prenom_demande }}</p>
@@ -282,54 +304,9 @@
                             <!-- /.widget-user -->
                         </div>
                         {{-- <hr style="background-color: rgba(211, 211, 211, 0.219);"> --}}
-                        <!-- Confirmation Modal -->
-                        <div id="confirmation-modal" class="modal">
-                            <div class="modal-content" style="background-color: rgba(246, 252, 246, 0)">
-                                <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-12">
-                                            <div class="card card-widget widget-user">
-                                                <div class="widget-user-header"
-                                                    style="background-color: rgb(255, 14, 14); color: white;">
-                                                    <h3 class="">Êtes-vous sûr de vouloir supprimer cet élément ?
-                                                    </h3>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="col-sm-12 mt-3 border-top">
-                                                        <div class="form-group text-center mt-3">
-                                                            <div>
-                                                                <!-- Ajoutez l'attribut href avec l'URL de destination -->
-                                                                <a href="{{ route('admin.UpdateEtat', ['stagiaire' => $stagiaire->theme]) }}"
-                                                                    class="btn btn-reser"
-                                                                    onclick="confirmDeleteFonction()">
-                                                                    <span class="mr-5">
-                                                                        <i class="fas fa-check-circle"
-                                                                            style="color: rgb(255, 14, 14);">
-                                                                            Oui,
-                                                                            Supprimé</i>
-                                                                    </span>
-                                                                </a>
-                                                                <button class="btn btn-reset"
-                                                                    onclick="hideConfirmationModalFonction()">
-                                                                    <span>
-                                                                        <i class="fas fa-times-circle"
-                                                                            style="color: rgb(0, 160, 5);">
-                                                                            Annulé</i>
-                                                                    </span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     @empty
-                        <div class="col">
-                            Mafy mafy ny midona aminay eee
+                        <div class="alert alert-danger alert-dismissible">
+                            <h5><i class="icon fas fa-ban"></i> Aucune stagiaire !</h5>
                         </div>
                     @endforelse
                 </div>
@@ -344,24 +321,71 @@
         </a>
     </div>
     <!-- /.content-wrapper -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content" style="background-color: rgba(246, 252, 246, 0)">
+            <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <div class="card card-widget widget-user">
+                            <div class="widget-user-header" style="background-color: rgb(255, 14, 14); color: white;">
+                                <h3 class="">Êtes-vous sûr de vouloir supprimer ce stagiaire ?</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="col-sm-12 mt-3 border-top">
+                                    <div class="form-group text-center mt-3">
+                                        <div>
+                                            <button class="btn btn-reset" onclick="deleteItemStagiaire()">
+                                                <span class="mr-5"><i class="fas fa-check-circle"
+                                                        style="color: rgb(255, 14, 14);">
+                                                        Oui, Supprimer
+                                                    </i></span>
+                                            </button>
+                                            <button class="btn btn-reset" onclick="hideConfirmationModalStagiaire()">
+                                                <span><i class="fas fa-times-circle" style="color: rgb(0, 160, 5);">
+                                                        Annuler</i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- JavaScript pour la confirmation de suppression -->
     <script>
-        function showConfirmationModalFonction() {
-            event.preventDefault(); // Empêche l'action par défaut du lien
+        let stagiaireIdToDelete = null;
+
+        function showConfirmationModalStagiaire(stagiaireId) {
+            stagiaireIdToDelete = stagiaireId;
             document.getElementById('confirmation-modal').style.display = 'block';
         }
 
-        function hideConfirmationModalFonction() {
+        function hideConfirmationModalStagiaire() {
             document.getElementById('confirmation-modal').style.display = 'none';
         }
 
-        function confirmDeleteFonction() {
-            // Effectuez ici l'action de suppression, par exemple :
-            // document.getElementById('delete-form-fonction').submit();
-            // ou une autre action que vous souhaitez effectuer lors de la suppression.
-            console.log("Action de suppression confirmée !");
-            hideConfirmationModalFonction(); // Cacher la modal après la confirmation.
+        function deleteItemStagiaire() {
+            if (stagiaireIdToDelete) {
+                // Construisez l'URL avec le stagiaireIdToDelete
+                let url = `/admin/abondonné/${stagiaireIdToDelete}`;
+
+                // Créez un formulaire et soumettez-le
+                let form = document.createElement('form');
+                form.action = url;
+                form.method = 'get'; // Ou 'post' si nécessaire
+
+                let csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = '{{ csrf_token() }}';
+                form.appendChild(csrfInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
         }
     </script>
 @endsection

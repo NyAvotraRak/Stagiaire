@@ -62,7 +62,7 @@
             <div class="mx-auto">
                 <h2 class="brand"><strong>
                         <!-- Brand Logo -->
-                        <img src="{{ asset('dist/img/iconMID.png') }}" alt="" class="brand-image img-circle"
+                        <img src="{{ asset('dist/img/logoMID.png') }}" alt="" class="brand-image img-circle"
                             style="width: 70px; height: 70px; object-fit: cover;"> Ministère de l'Intérieur
                     </strong>
                 </h2>
@@ -110,12 +110,14 @@
                                         <p>Mon Compte</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.utilisateur.index') }}" class="nav-link">
-                                        <i class="fas fa-users" style="color: rgb(0, 160, 5);"></i>
-                                        <p>Gérer les utilisateurs</p>
-                                    </a>
-                                </li>
+                                @if (Auth::user()->fonction->role == 'Administrateur')
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.utilisateur.index') }}" class="nav-link">
+                                            <i class="fas fa-users" style="color: rgb(0, 160, 5);"></i>
+                                            <p>Gérer les utilisateurs</p>
+                                        </a>
+                                    </li>
+                                @endif
                                 <li class="nav-item">
                                     <!-- Authentication -->
                                     <form class="nav-link" method="POST" action="{{ route('logout') }}">
@@ -129,7 +131,7 @@
                     <li class="nav-item">
                         <a href="{{ route('admin.demande.index') }}" @class(['nav-link', 'active' => str_contains($route, 'demande.')])>
                             <i class="fas fa-tasks" style="color: rgb(0, 160, 5);"></i>
-                            <p>
+                            <p @class(['text-white' => str_contains($route, 'demande.')])>
                                 Demandes
                             </p>
                         </a>
@@ -137,7 +139,7 @@
                     <li class="nav-item">
                         <a href="{{ route('admin.service.index') }}" @class(['nav-link', 'active' => str_contains($route, 'service.')])>
                             <i class="fas fa-building" style="color: rgb(0, 160, 5);"></i>
-                            <p>
+                            <p @class(['text-white' => str_contains($route, 'service.')])>
                                 Departements
                             </p>
                         </a>
@@ -146,35 +148,39 @@
                     <li class="nav-item">
                         <a href="{{ route('admin.fonction.index') }}" @class(['nav-link', 'active' => str_contains($route, 'fonction.')])>
                             <i class="fas fa-briefcase" style="color: rgb(0, 160, 5);"></i>
-                            <p>
+                            <p @class(['text-white' => str_contains($route, 'fonction.')])>
                                 Fonctions
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.niveau.index') }}" @class(['nav-link', 'active' => str_contains($route, 'niveau.')])>
-                            <i class="fas fa-graduation-cap" style="color: rgb(0, 160, 5);"></i>
-                            <p>
-                                Niveau d'Etude
-                            </p>
-                        </a>
-                    </li>
+                    @if (Auth::user()->fonction->role == 'Administrateur')
+                        <li class="nav-item">
+                            <a href="{{ route('admin.niveau.index') }}" @class(['nav-link', 'active' => str_contains($route, 'niveau.')])>
+                                <i class="fas fa-graduation-cap" style="color: rgb(0, 160, 5);"></i>
+                                <p @class(['text-white' => str_contains($route, 'niveau.')])>
+                                    Niveau d'Etude
+                                </p>
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a href="{{ route('admin.accepte.index') }}" @class(['nav-link', 'active' => str_contains($route, 'accepte.')])>
                             <i class="fas fa-user-graduate" style="color: rgb(0, 160, 5);"></i>
-                            <p>
-                                Stagiaire
+                            <p @class(['text-white' => str_contains($route, 'accepte.')])>
+                                Stagiaires
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('admin.ministere.index') }}" @class(['nav-link', 'active' => str_contains($route, 'ministere.')])>
-                            <i class="fas fa-info-circle" style="color: rgb(0, 160, 5);"></i>
-                            <p>
-                                A propos
-                            </p>
-                        </a>
-                    </li>
+                    @if (Auth::user()->fonction->role == 'Administrateur')
+                        <li class="nav-item">
+                            <a href="{{ route('admin.ministere.index') }}" @class(['nav-link', 'active' => str_contains($route, 'ministere.')])>
+                                <i class="fas fa-info-circle" style="color: rgb(0, 160, 5);"></i>
+                                <p @class(['text-white' => str_contains($route, 'ministere.')])>
+                                    A propos
+                                </p>
+                            </a>
+                        </li>
+                    @endif
                 </nav>
 
                 <!-- /.sidebar-menu -->

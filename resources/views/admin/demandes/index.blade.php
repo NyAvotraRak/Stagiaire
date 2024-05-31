@@ -11,11 +11,27 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <!-- Afficher le message de succès -->
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="icon fas fa-check"></i> Succès !</h5>
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <!-- Afficher le message d'erreur -->
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="icon fas fa-ban"></i> Erreur !</h5>
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="card-title">Nombre total de la demande : {{ $nombre_demandes }}</h5>
+                                    <h5 class="card-title">Demande : {{ $nombre_demandes }}</h5>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -70,7 +86,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
                                     <input type="text" class="form-control" placeholder="Nom" name="nom_demande"
-                                        value="{{ old('nom_demande', $input['nom_demande'] ?? '') }}">
+                                        value="{{ request('nom_demande') }}">
                                 </div>
                             </div>
                         </div>
@@ -81,7 +97,7 @@
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
                                     <input type="text" class="form-control" placeholder="Prénom" name="prenom_demande"
-                                        value="{{ old('prenom_demande', $input['prenom_demande'] ?? '') }}">
+                                        value="{{ request('prenom_demande') }}">
                                 </div>
                             </div>
                         </div>
@@ -221,19 +237,20 @@
                                                         <a
                                                             href="{{ route('admin.accepte.add', ['demande_id' => $demande->id]) }}">
                                                             <span><i class="fas fa-check-circle"
-                                                                    style="color: rgb(0, 160, 5);"> Accepté</i></span>
+                                                                    style="color: rgb(0, 160, 5);"> Accepter</i></span>
                                                         </a>
                                                     </div>
                                                 @endif
                                                 <div class="col">
                                                     <form action="{{ route('admin.demande.destroy', $demande) }}"
-                                                        id="delete-form" method="post">
+                                                        id="delete-form-demande-{{ $demande->id }}" method="post">
                                                         @csrf
                                                         @method('delete')
                                                     </form>
-                                                    <button class="btn btn-reset" onclick="showConfirmationModal()">
+                                                    <button class="btn btn-reset"
+                                                        onclick="showConfirmationModalDemande('{{ $demande->id }}')">
                                                         <span><i class="fas fa-times-circle"
-                                                                style="color: rgb(255, 14, 14);"> Réfusé</i></span>
+                                                                style="color: rgb(255, 14, 14);"> Réfuser</i></span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -247,15 +264,8 @@
                             <!-- /.widget-user -->
                         </div>
                     @empty
-                        <div class="col-12 d-flex justify-content-center">
-                            <div class="row">
-                                <img src="{{ asset('dist/img/iconMID.png') }}"
-                                    style="height: 150px; width: 150px; object-fit: cover;" class="product-image"
-                                    alt="Product Image">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <p>Vide</p>
+                        <div class="alert alert-danger alert-dismissible">
+                            <h5><i class="icon fas fa-ban"></i> Aucune demande !</h5>
                         </div>
                     @endforelse
                 </div>
@@ -278,20 +288,20 @@
                     <div class="col-md-12">
                         <div class="card card-widget widget-user">
                             <div class="widget-user-header" style="background-color: rgb(255, 14, 14); color: white;">
-                                <h3 class="">Êtes-vous sûr de vouloir supprimer cet élément ?</h3>
+                                <h3 class="">Êtes-vous sûr de vouloir supprimer cette demande ?</h3>
                             </div>
                             <div class="card-footer">
                                 <div class="col-sm-12 mt-3 border-top">
                                     <div class="form-group text-center mt-3">
                                         <div>
-                                            <button class="btn btn-reset" onclick="deleteItem()">
+                                            <button class="btn btn-reset" onclick="deleteItemDemande()">
                                                 <span class="mr-5"><i class="fas fa-check-circle"
                                                         style="color: rgb(255, 14, 14);">
                                                         Oui,
-                                                        Suprimé</i></span></button>
-                                            <button class="btn btn-reser" onclick="hideConfirmationModal()">
+                                                        Suprimer</i></span></button>
+                                            <button class="btn btn-reser" onclick="hideConfirmationModalDemande()">
                                                 <span><i class="fas fa-times-circle" style="color: rgb(0, 160, 5);">
-                                                        Annulé
+                                                        Annuler
                                                     </i></span></button>
                                         </div>
                                     </div>
@@ -304,16 +314,21 @@
         </div>
     </div>
     <script>
-        function showConfirmationModal() {
+        let demandeIdToDelete = null;
+
+        function showConfirmationModalDemande(demandeId) {
+            demandeIdToDelete = demandeId;
             document.getElementById('confirmation-modal').style.display = 'block';
         }
 
-        function hideConfirmationModal() {
+        function hideConfirmationModalDemande() {
             document.getElementById('confirmation-modal').style.display = 'none';
         }
 
-        function deleteItem() {
-            document.getElementById('delete-form').submit();
+        function deleteItemDemande() {
+            if (demandeIdToDelete) {
+                document.getElementById('delete-form-demande-' + demandeIdToDelete).submit();
+            }
         }
     </script>
 @endsection

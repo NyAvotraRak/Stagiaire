@@ -3,6 +3,23 @@
 @section('title', 'Accueil')
 
 @section('content')
+    <div>
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ session('success') }}
+            </div>
+        @endif
+        <!-- Afficher le message d'erreur -->
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-ban"></i> Erreur !</h5>
+                {{ session('error') }}
+            </div>
+        @endif
+    </div>
     <section style="padding-top: 7rem;">
         <div class="bg-holder" style="background-image:url(assets/img/hero/hero-bg.svg);">
         </div>
@@ -10,15 +27,15 @@
 
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-5 col-lg-6 order-0 order-md-1 text-end"><img class="pt-7 pt-md-0 hero-img"
-                        src="{{asset('dist/img/prod-5.jpg')}}" alt="hero-header" /></div>
-                <div class="col-md-7 col-lg-6 text-md-start text-center py-6">
-                    <h4 class="fw-bold text-danger mb-3">Ministere de l'Interieur</h4>
-                    <h1 class="hero-title">Titre Ministere de l'Interieur</h1>
-                    <p class="mb-4 fw-medium">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore minus dicta
-                        fugiat quis at in animi debitis itaque, quasi expedita laborum non obcaecati! Eius sit, beatae
-                        quisquam placeat ut unde!</p>
-                </div>
+                @foreach ($ministeres as $ministere)
+                    <div class="col-md-5 col-lg-6 order-0 order-md-1 text-end"><img class="pt-7 pt-md-0 hero-img"
+                            src="{{ $ministere->image_url() }}" alt="hero-header" /></div>
+                    <div class="col-md-7 col-lg-6 text-md-start text-center py-6">
+                        <h1 class="hero-title">
+                            {{ $ministere->titre }}</h1>
+                        <p class="mb-4 fw-medium">{{ $ministere->description_ministere }}</p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>

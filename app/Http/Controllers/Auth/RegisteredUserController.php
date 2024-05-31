@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Models\Fonction;
+use App\Models\FonctionService;
 use App\Models\Service;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,10 +30,9 @@ class RegisteredUserController extends Controller
     // }
     public function create(): View
     {
-        $fonctions = Fonction::all();
-        $services = Service::all();
+        $fonctions = Fonction::with('service')->get();
 
-        return view('auth.register', compact('fonctions', 'services'));
+        return view('auth.register', compact('fonctions'));
     }
 
 
@@ -43,12 +43,26 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterRequest $request): RedirectResponse
     {
+        // dd($request);
         // Crée une nouvelle instance d'utilisateur
         $user = new User();
 
         // Extraction des données du formulaire et création de l'utilisateur avec mot de passe hashé
         $userData = $this->extract_data($user, $request);
         $userData['password'] = bcrypt($request->input('password')); // Hashage du mot de passe
+
+
+        // Récupérer la valeur de fonction_service sélectionnée
+        $selectedFonctionService = $request->input('fonction_id');
+
+        // Séparer service_id et fonction_id
+        list($fonctionId, $serviceId) = explode('_', $selectedFonctionService);
+
+        // Ajouter les IDs de service et de fonction aux données de l'utilisateur
+        $userData['fonction_id'] = $fonctionId;
+
+
+        // Créer l'utilisateur avec les données fournies
         $user = User::create($userData);
 
         // Émettre un événement pour indiquer l'enregistrement de l'utilisateur

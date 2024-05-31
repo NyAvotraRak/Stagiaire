@@ -25,7 +25,7 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Lorem ipsum dolor sit amet.</h3>
+                                <h3 class="card-title">Création d'un service</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image_demande');
             $table->string('cv');
             $table->string('lm');
-            $table->string('autres');
+            $table->string('autres')->nullable();
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->foreignId('etat_id')->constrained('etats')->onDelete('cascade');
             $table->foreignId('niveau_id')->constrained('niveaux')->onDelete('cascade');

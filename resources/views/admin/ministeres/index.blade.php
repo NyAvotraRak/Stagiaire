@@ -8,15 +8,22 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Minitère de l'Interieur</h1>
+                <!-- Afficher le message de succès -->
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h5><i class="icon fas fa-check"></i> Succès !</h5>
+                        {{ session('success') }}
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                        </ol>
+                @endif
+                <!-- Afficher le message d'erreur -->
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <h5><i class="icon fas fa-ban"></i> Erreur !</h5>
+                        {{ session('error') }}
                     </div>
-                </div>
+                @endif
             </div><!-- /.container-fluid -->
         </section>
 
@@ -42,7 +49,7 @@
                                 <div class="col-12 col-sm-6">
                                     <a href="{{ route('admin.ministere.edit', $ministere) }}" class="template-btn mt-3">
                                         <span><i class="fas fa-edit" style="color: rgb(106, 128, 252);">
-                                                Edité </i></span></a>
+                                                Editer </i></span></a>
                                 </div>
 
                             </div>

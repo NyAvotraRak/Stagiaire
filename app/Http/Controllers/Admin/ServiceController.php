@@ -7,12 +7,15 @@ use App\Http\Requests\Admin\SearchServiceRequest;
 use App\Http\Requests\Admin\ServiceRequest;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
     public function index(SearchServiceRequest $request)
     {
+        $nom_service = $request->input('nom_service');
+        $description_service = $request->input('role');
         // Commencez par une requête Eloquent vide
         $query = Service::select('services.*')
             ->orderBy('services.created_at', 'desc');
@@ -28,7 +31,30 @@ class ServiceController extends Controller
         // Exécutez la requête et récupérez les résultats
         $services = $query->get();
 
-        return view('admin.services.index', compact('services'));
+        // Compter le nombre total de services
+        $totalServices = $services->count();
+
+        // Compter le nombre total de service en tenant compte des critères de recherche
+        $filteredServices = Service::select(DB::raw('count(*) as total'))
+            ->when($nom_service, function ($query, $nom_service) {
+                return $query->where('nom_service', 'like', "%{$nom_service}%");
+            })
+            ->when($description_service, function ($query, $description_service) {
+                return $query->where('description_service', 'like', "%{$description_service}%");
+            })
+            ->groupBy('nom_service')
+            ->get();
+
+        // Calculer le pourcentage pour chaque niveau
+        foreach ($filteredServices as $service) {
+            if ($totalServices != 0) {
+                $service->pourcentage = ($service->total / $totalServices) * 100;
+            } else {
+                $service->pourcentage = 0;
+            }
+        }
+
+        return view('admin.services.index', compact('services', 'nom_service', 'description_service', 'totalServices', 'filteredServices'));
     }
     /**
      * Display a listing of the resource.
@@ -148,6 +174,12 @@ class ServiceController extends Controller
             }
             // Enregistrer le nouveau fichier d'image et mettre à jour le chemin dans les données
             $data['image_service'] = $image_service->store('file', 'public');
+        } else {
+            // Si aucune image n'est téléchargée et que le service n'a pas d'image existante,
+            // vous pouvez définir une valeur par défaut ou gérer autrement.
+            if (!$service->exists) {
+                $data['image_service'] = ''; // ou une autre logique
+            }
         }
 
         return $data; // Retourner les données mises à jour
@@ -159,6 +191,7 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
+        // dd($service->id);
         $service->delete();
         return to_route('admin.service.index')->with('success', 'Le service a bien été Supprimé');
     }
