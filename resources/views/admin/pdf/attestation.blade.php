@@ -82,9 +82,6 @@
                     <div class="centered-div">
                         <div class="content">
                             <div>
-                                <img src="../../../../public/dist/img/logoMID.png" alt="Image not found">
-                            </div>
-                            <div>
                                 <div>MINISTERE DE L’INTERIEUR <br> ET DE LA DECENTRALISATION</div>
                                 <div>********</div>
                                 <div>SECRETARIAT GENERAL</div>
@@ -92,8 +89,6 @@
                                 <div>DIRECTION GENERALE DE L’INTERIEUR</div>
                                 <div>*******</div>
                                 <div>DIRECTION DES SYSTEMES D’INFORMATION</div>
-                                <div>*******</div>
-                                <div>SERVICE DES RESEAUX ET DE LA GESTION <br> DES MATERIELS INFORMATIQUES</div>
                             </div>
                         </div>
                     </div>
